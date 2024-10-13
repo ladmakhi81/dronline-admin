@@ -1,5 +1,6 @@
 "use client";
 
+import { vazirFont } from "@/core/vazir-font.core";
 import { useNotificationStore } from "@/store/notification.store";
 import { message } from "antd";
 import { FC, PropsWithChildren, useEffect } from "react";
@@ -14,7 +15,11 @@ const NotificationProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (notification?.message) {
       notify
-        .open({ type: notification?.type, content: notification?.message })
+        .open({
+          type: notification?.type,
+          content: notification?.message,
+          style: { ...vazirFont.style },
+        })
         .then(() => {
           clearNotification();
         });

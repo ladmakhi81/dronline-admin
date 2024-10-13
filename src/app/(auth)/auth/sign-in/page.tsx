@@ -1,21 +1,15 @@
 "use client";
 
-import {
-  Button,
-  Card,
-  Flex,
-  Form,
-  Input,
-  Space,
-  Typography,
-  message,
-} from "antd";
+import { Button, Card, Flex, Form, Input, Space, Typography } from "antd";
 import { FC } from "react";
 import UserIcon from "@/assets/icons/interface/outline/user.svg";
 import KeyIcon from "@/assets/icons/interface/outline/lock.svg";
 import LoginIcon from "@/assets/icons/interface/outline/login.svg";
 import { SIGN_IN_VALIDATION_RULES } from "./validation-rules";
-import { useLogin } from "@/services/auth";
+import { useLogin } from "@/services/auth/login";
+import { useNotificationStore } from "@/store/notification.store";
+import { useRouter } from "nextjs-toploader/app";
+import { useAuthStore } from "@/store/auth.store";
 
 interface FieldsType {
   phone: string;
@@ -25,6 +19,11 @@ interface FieldsType {
 const SigninPage: FC = () => {
   const [form] = Form.useForm<FieldsType>();
   const { mutateAsync: loginMutate } = useLogin();
+  const showNotification = useNotificationStore(
+    (state) => state.addNotification
+  );
+  const setAuthStore = useAuthStore((state) => state.setToken);
+  const router = useRouter();
 
   const onSubmitLogin = (data: FieldsType) => {
     loginMutate({
@@ -33,7 +32,9 @@ const SigninPage: FC = () => {
       type: "Admin",
     })
       .then((data) => {
-        // notify.success("ورود شما با موفقیت انجام گردید");
+        showNotification("ورود شما با موفقیت انجام گردید", "success");
+        setAuthStore(data.accessToken, data.refreshToken);
+        router.push("/");
       })
       .catch(() => {});
   };
@@ -48,7 +49,6 @@ const SigninPage: FC = () => {
         transform: "translate(-50%, -50%)",
       }}
     >
-      {contentHolder}
       <Flex
         justify="center"
         align="center"
@@ -90,6 +90,7 @@ const SigninPage: FC = () => {
                 size="large"
                 placeholder="گذرواژه خود را وارد کنید"
                 prefix={<KeyIcon />}
+                type="password"
               />
             </Form.Item>
           </Flex>
