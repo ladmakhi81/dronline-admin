@@ -1,18 +1,91 @@
 "use client";
 
 import { useGetLocations } from "@/services/location/get-locations";
+import { Schedule } from "@/services/schedule/types";
 import TableWrapper from "@/shared-components/table-wrapper";
-import { Button, Card, Divider, Flex, Typography } from "antd";
-import { FC, useMemo } from "react";
+import { Button, Card, Divider, Empty, Flex, Typography } from "antd";
+import { FC, useMemo, useState } from "react";
+import AddOrEditLocationDialog from "./components/add-or-edit-location-dialog";
+import { GetLocationsQuery, Location } from "@/services/location/types";
+import { AnyObject } from "antd/es/_util/type";
+import DeleteConfirmation from "@/shared-components/delete-confirmation";
+import { useDeleteLocation } from "@/services/location/delete-location";
+import { useNotificationStore } from "@/store/notification.store";
+import EmptyWrapper from "@/shared-components/empty-wrapper";
 
 const LocationsPage: FC = () => {
-  const { data: locationsData } = useGetLocations({ limit: 10, page: 0 });
+  const [searchQuery, setSearchQuery] = useState<GetLocationsQuery>({});
+
+  const { mutateAsync: deleteLocationMutate } = useDeleteLocation();
+
+  const {
+    data: locationsData,
+    refetch: refetchLocations,
+    isLoading: isLocationLoading,
+    isFetching: isFetchingLocation,
+  } = useGetLocations({
+    ...searchQuery,
+  });
+
+  const showNotification = useNotificationStore(
+    (state) => state.addNotification
+  );
+
   const locations = useMemo(() => {
     return (locationsData?.content || []).map((location, locationIndex) => ({
       ...location,
       index: locationIndex + 1,
     }));
   }, [locationsData?.content]);
+
+  const [isAddOrEditLocationDialogOpen, setAddOrEditLocationDialogOpen] =
+    useState(false);
+
+  const [selectedLocationToEdit, setSelectedLocationToEdit] =
+    useState<Location>();
+
+  const [selectedLocationToDelete, setSelectedLocationToDelete] =
+    useState<Location>();
+
+  const handleCreateLocation = () => {
+    setAddOrEditLocationDialogOpen(true);
+  };
+
+  const handleEditLocation = (location: Location) => {
+    setSelectedLocationToEdit(location);
+    setAddOrEditLocationDialogOpen(true);
+  };
+
+  const handleDeleteLocation = (location: Location) => {
+    setSelectedLocationToDelete(location);
+  };
+
+  const handleCloseCreateOrEditLocationDialog = () => {
+    setAddOrEditLocationDialogOpen(false);
+    setSelectedLocationToEdit(undefined);
+  };
+
+  const handleCloseDeleteConfirmation = () => {
+    setSelectedLocationToDelete(undefined);
+  };
+
+  const handleConfirmDeleteLocation = () => {
+    if (selectedLocationToDelete?.id) {
+      deleteLocationMutate(selectedLocationToDelete?.id).then(() => {
+        handleCloseDeleteConfirmation();
+        showNotification("حذف لوکیشن با موفقیت انجام گردید", "success");
+        refetchLocations();
+      });
+    }
+  };
+
+  const handlePagination = (page: number, pageSize: number) => {
+    setSearchQuery((prevState) => ({
+      ...prevState,
+      limit: pageSize,
+      page: page - 1,
+    }));
+  };
 
   const columns = [
     {
@@ -31,21 +104,29 @@ const LocationsPage: FC = () => {
       title: "تعداد شیفت های موجود",
       dataIndex: "doctorSchedules",
       width: 200,
-      render: (value) => {
+      render: (value: Schedule[]) => {
         return value.length;
       },
     },
     {
       title: "عملیات",
       width: 200,
-      render: () => {
+      render: (_: unknown, record: AnyObject) => {
         return (
           <Flex gap="10px" justify="center" align="center">
-            <Button size="small" type="link">
+            <Button
+              onClick={handleEditLocation.bind(null, record as Location)}
+              size="small"
+              type="link"
+            >
               ویرایش
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
-            <Button size="small" type="link">
+            <Button
+              onClick={handleDeleteLocation.bind(null, record as Location)}
+              size="small"
+              type="link"
+            >
               حذف
             </Button>
           </Flex>
@@ -56,29 +137,58 @@ const LocationsPage: FC = () => {
 
   return (
     <Flex style={{ height: "100%" }} vertical gap="24px">
+      <AddOrEditLocationDialog
+        open={isAddOrEditLocationDialogOpen}
+        onClose={handleCloseCreateOrEditLocationDialog}
+        refetchLocation={refetchLocations}
+        selectedLocation={selectedLocationToEdit}
+      />
+      <DeleteConfirmation
+        open={!!selectedLocationToDelete}
+        onClose={handleCloseDeleteConfirmation}
+        onConfirm={handleConfirmDeleteLocation}
+        title="حذف لوکیشن"
+        renderBody={() => (
+          <Typography.Text>
+            آیا از حذف شهر {selectedLocationToDelete?.city} آدرس{" "}
+            {selectedLocationToDelete?.address} اطمینان دارید؟
+          </Typography.Text>
+        )}
+      />
       <Card styles={{ body: { padding: "15px" } }}>
         <Flex justify="space-between" align="center">
           <Typography.Title style={{ margin: 0 }} level={5}>
             لیست لوکیشن های سرویس دهنده
           </Typography.Title>
-          <Button type="primary">ساخت لوکیشن</Button>
+          <Button onClick={handleCreateLocation} type="primary">
+            ساخت لوکیشن
+          </Button>
         </Flex>
       </Card>
       <Card
         style={{ flex: 1 }}
         styles={{ body: { padding: "15px", height: "100%" } }}
       >
-        <TableWrapper
-          rowKey="id"
-          dataSource={locations}
-          bordered
-          size="middle"
-          columns={columns}
-          pagination={{
-            position: ["bottomCenter"],
-            showSizeChanger: true,
-          }}
-        />
+        <EmptyWrapper
+          description="ابتدا باید لوکیشن سرویس دهنده ای ایجاد کنید"
+          title="لوکیشن سرویس دهنده"
+          isEmpty={locations.length === 0}
+        >
+          <TableWrapper
+            loading={isLocationLoading || isFetchingLocation}
+            rowKey="id"
+            dataSource={locations}
+            bordered
+            size="middle"
+            columns={columns}
+            pagination={{
+              position: ["bottomCenter"],
+              showSizeChanger: true,
+              total: locationsData?.count ?? 0,
+              onChange: handlePagination,
+            }}
+          />
+        </EmptyWrapper>
       </Card>
     </Flex>
   );
