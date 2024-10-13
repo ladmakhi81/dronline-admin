@@ -1,5 +1,5 @@
 import { httpClient } from "@/core/http-client.core";
-import { LoginRequestDto, LoginResponseDto } from "./types";
+import { LoginRequestDto, LoginResponseDto } from "../types";
 import { useMutation } from "@tanstack/react-query";
 
 const loginApi = (data: LoginRequestDto) => {

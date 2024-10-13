@@ -3,6 +3,7 @@
 import { FC, PropsWithChildren } from "react";
 import { ConfigProvider } from "antd";
 import { vazirFont } from "@/core/vazir-font.core";
+import locale from "antd/locale/fa_IR";
 
 export const AntDesignProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -13,6 +14,7 @@ export const AntDesignProvider: FC<PropsWithChildren> = ({ children }) => {
         },
       }}
       direction="rtl"
+      locale={locale}
     >
       {children}
     </ConfigProvider>

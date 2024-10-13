@@ -8,6 +8,7 @@ interface AuthStore {
   setToken: (accessToken: string, refreshToken: string) => void;
   user?: User;
   setUser: (user: User) => void;
+  resetAuth: () => void;
 }
 
 const intialState = getTokenCookie();
@@ -20,4 +21,12 @@ export const useAuthStore = create<AuthStore>((setState) => ({
   accessToken: intialState?.accessToken,
   refreshToken: intialState?.refreshToken,
   setUser: (user: User) => setState((state) => ({ ...state, user })),
+  resetAuth: () => {
+    return setState((state) => ({
+      ...state,
+      accessToken: undefined,
+      refreshToken: undefined,
+      user: undefined,
+    }));
+  },
 }));

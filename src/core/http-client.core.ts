@@ -13,6 +13,12 @@ httpClient.interceptors.request.use((config) => {
 httpClient.interceptors.response.use(
   (value) => value.data,
   (error) => {
+    if (error.response.status === 401) {
+      useAuthStore.getState().resetAuth();
+      window.location.href = "/auth/sign-in";
+      return Promise.reject(error);
+    }
+
     useNotificationStore
       .getState()
       .addNotification(error.response.data.message, "error");
