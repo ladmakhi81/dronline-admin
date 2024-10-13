@@ -10,4 +10,8 @@ export const Container = styled(Flex)`
   .ant-empty-image {
     height: 200px;
   }
+
+  .ant-empty {
+    width: 300px;
+  }
 `;

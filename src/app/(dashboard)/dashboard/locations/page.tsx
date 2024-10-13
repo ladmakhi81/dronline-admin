@@ -3,7 +3,7 @@
 import { useGetLocations } from "@/services/location/get-locations";
 import { Schedule } from "@/services/schedule/types";
 import TableWrapper from "@/shared-components/table-wrapper";
-import { Button, Card, Divider, Empty, Flex, Typography } from "antd";
+import { Button, Card, Divider, Flex, Typography } from "antd";
 import { FC, useMemo, useState } from "react";
 import AddOrEditLocationDialog from "./components/add-or-edit-location-dialog";
 import { GetLocationsQuery, Location } from "@/services/location/types";
@@ -12,6 +12,7 @@ import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import { useDeleteLocation } from "@/services/location/delete-location";
 import { useNotificationStore } from "@/store/notification.store";
 import EmptyWrapper from "@/shared-components/empty-wrapper";
+import TableHeader from "@/shared-components/table-header";
 
 const LocationsPage: FC = () => {
   const [searchQuery, setSearchQuery] = useState<GetLocationsQuery>({});
@@ -155,16 +156,11 @@ const LocationsPage: FC = () => {
           </Typography.Text>
         )}
       />
-      <Card styles={{ body: { padding: "15px" } }}>
-        <Flex justify="space-between" align="center">
-          <Typography.Title style={{ margin: 0 }} level={5}>
-            لیست لوکیشن های سرویس دهنده
-          </Typography.Title>
-          <Button onClick={handleCreateLocation} type="primary">
-            ساخت لوکیشن
-          </Button>
-        </Flex>
-      </Card>
+      <TableHeader
+        createText="ساخت لوکیشن"
+        headTitle="لیست لوکیشن های سرویس دهنده"
+        onCreate={handleCreateLocation}
+      />
       <Card
         style={{ flex: 1 }}
         styles={{ body: { padding: "15px", height: "100%" } }}
