@@ -90,7 +90,6 @@ const LocationsPage: FC = () => {
   };
 
   const columns = [
-    ...TABLE_DEFAULT_COLUMNS,
     {
       title: "شهر",
       dataIndex: "city",
@@ -107,6 +106,7 @@ const LocationsPage: FC = () => {
         return value.length;
       },
     },
+    ...TABLE_DEFAULT_COLUMNS,
     {
       title: "عملیات",
       width: 200,

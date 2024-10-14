@@ -3,12 +3,13 @@
 import { Category } from "@/services/category/types";
 import OperationDrawer from "@/shared-components/operation-drawer";
 import { Button, Form, Input, Upload } from "antd";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Container } from "./styles";
 import { CREATE_EDIT_CATEGORY_VALIDATION_RULES } from "./validation-rules";
 import { useAuthStore } from "@/store/auth.store";
 import { useCreateCategory } from "@/services/category/create-category";
 import { useNotificationStore } from "@/store/notification.store";
+import { useEditCategory } from "@/services/category/edit-category";
 
 interface FieldsType {
   name: string;
@@ -28,6 +29,7 @@ const AddOrEditCategoryDialog: FC<Props> = ({
   selectedCategory,
   refetchCategories,
 }) => {
+  const { mutateAsync: editCategoryMutate } = useEditCategory();
   const { mutateAsync: createCategoryMutate } = useCreateCategory();
   const [form] = Form.useForm();
   const fieldsWatch = Form.useWatch([], form);
@@ -35,6 +37,12 @@ const AddOrEditCategoryDialog: FC<Props> = ({
   const showNotification = useNotificationStore(
     (state) => state.addNotification
   );
+
+  useEffect(() => {
+    if (selectedCategory) {
+      form.setFieldValue("name", selectedCategory.name);
+    }
+  }, [form, selectedCategory]);
 
   const handleClose = () => {
     onClose();
@@ -49,6 +57,20 @@ const AddOrEditCategoryDialog: FC<Props> = ({
     const formData = data as FieldsType;
 
     if (selectedCategory) {
+      editCategoryMutate({
+        name: formData.name,
+        icon: selectedCategory.icon,
+        id: selectedCategory.id,
+      })
+        .then(() => {
+          showNotification(
+            "ویرایش زمینه تخصصی با موفقیت انجام گردید",
+            "success"
+          );
+          refetchCategories();
+          handleClose();
+        })
+        .catch(() => {});
     } else {
       createCategoryMutate({
         icon: formData.icon.at(-1)?.response.fileName as string,
@@ -97,32 +119,34 @@ const AddOrEditCategoryDialog: FC<Props> = ({
         >
           <Input size="large" />
         </Form.Item>
-        <Form.Item
-          name="icon"
-          valuePropName="fileList"
-          getValueFromEvent={normFile}
-          rules={CREATE_EDIT_CATEGORY_VALIDATION_RULES.icon}
-        >
-          <Upload
-            action={`${process.env.API_URL}/categories/upload-icon`}
-            multiple={false}
-            listType="picture"
-            maxCount={1}
+        {!selectedCategory && (
+          <Form.Item
             name="icon"
-            headers={{
-              Authorization: `Bearer ${accessToken}`,
-            }}
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+            rules={CREATE_EDIT_CATEGORY_VALIDATION_RULES.icon}
           >
-            <Button
-              hidden={isSelectIcon}
-              size="large"
-              type="dashed"
-              className="upload-button"
+            <Upload
+              action={`${process.env.API_URL}/categories/upload-icon`}
+              multiple={false}
+              listType="picture"
+              maxCount={1}
+              name="icon"
+              headers={{
+                Authorization: `Bearer ${accessToken}`,
+              }}
             >
-              افزودن آیکن مربوط به دسته بندی
-            </Button>
-          </Upload>
-        </Form.Item>
+              <Button
+                hidden={isSelectIcon}
+                size="large"
+                type="dashed"
+                className="upload-button"
+              >
+                افزودن آیکن مربوط به دسته بندی
+              </Button>
+            </Upload>
+          </Form.Item>
+        )}
       </Container>
     </OperationDrawer>
   );

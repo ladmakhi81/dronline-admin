@@ -16,3 +16,5 @@ export interface CreateCategoryReqBody {
   name: string;
   icon: string;
 }
+
+export type EditCategoryReqBody = Partial<CreateCategoryReqBody>;
