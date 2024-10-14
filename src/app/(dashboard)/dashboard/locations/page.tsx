@@ -13,6 +13,7 @@ import { useDeleteLocation } from "@/services/location/delete-location";
 import { useNotificationStore } from "@/store/notification.store";
 import EmptyWrapper from "@/shared-components/empty-wrapper";
 import TableHeader from "@/shared-components/table-header";
+import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 
 const LocationsPage: FC = () => {
   const [searchQuery, setSearchQuery] = useState<GetLocationsQuery>({});
@@ -89,10 +90,7 @@ const LocationsPage: FC = () => {
   };
 
   const columns = [
-    {
-      title: "ردیف",
-      dataIndex: "index",
-    },
+    ...TABLE_DEFAULT_COLUMNS,
     {
       title: "شهر",
       dataIndex: "city",

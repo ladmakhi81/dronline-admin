@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        hostname: "localhost",
+      },
+    ],
+  },
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")
@@ -19,6 +26,10 @@ const nextConfig = {
     );
     fileLoaderRule.exclude = /\.svg$/i;
     return config;
+  },
+  env: {
+    API_URL: "http://localhost:8080/api",
+    API_STATIC_FILES: "http://localhost:8080/public",
   },
 };
 

@@ -2,7 +2,7 @@ import { useAuthStore } from "@/store/auth.store";
 import { useNotificationStore } from "@/store/notification.store";
 import axios from "axios";
 
-const httpClient = axios.create({ baseURL: "http://localhost:8080/api" });
+const httpClient = axios.create({ baseURL: process.env.API_URL });
 
 httpClient.interceptors.request.use((config) => {
   const accessToken = useAuthStore.getState().accessToken;

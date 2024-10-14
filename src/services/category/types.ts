@@ -11,3 +11,8 @@ export interface Category {
 }
 
 export type GetCategoriesQuery = PageableQuery;
+
+export interface CreateCategoryReqBody {
+  name: string;
+  icon: string;
+}
