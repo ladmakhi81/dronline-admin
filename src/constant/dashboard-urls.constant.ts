@@ -1,9 +1,9 @@
 export const DASHBOARD_URLS = {
   dashboard: "/dashboard",
   users: "/dashboard/users",
-  admin_users: "/dashboard/users/admin",
-  doctor_users: "/dashboard/users/doctor",
-  patient_users: "/dashboard/users/patient",
+  admin_users: "/dashboard/users/admins",
+  doctor_users: "/dashboard/users/doctors",
+  patient_users: "/dashboard/users/patients",
   categories: "/dashboard/categories",
   locations: "/dashboard/locations",
   schedules: "/dashboard/schedules",

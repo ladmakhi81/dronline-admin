@@ -24,8 +24,12 @@ const CategoriesPage: FC = () => {
     page: 0,
   });
 
-  const { data: categoriesData, refetch: refetchCategories } =
-    useGetCategories(apiQuery);
+  const {
+    data: categoriesData,
+    refetch: refetchCategories,
+    isLoading: isCategoriesLoading,
+    isFetching: isCategoriesFetching,
+  } = useGetCategories(apiQuery);
 
   const showNotification = useNotificationStore(
     (state) => state.addNotification
@@ -175,6 +179,7 @@ const CategoriesPage: FC = () => {
           description="آیتمی وجود ندارد, از طریق دکمه افزودن زمینه تخصصی جدید, یک آیتم جدید ایجاد کنید"
         >
           <TableWrapper
+            loading={isCategoriesFetching || isCategoriesLoading}
             size="middle"
             bordered
             rowKey="id"
