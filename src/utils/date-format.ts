@@ -7,3 +7,6 @@ export const dateFormater = dayjs;
 
 export const jalaliDateTimeFormater = (value: Date) =>
   dateFormater(value).calendar("jalali").format("YYYY-MM-DD HH:mm");
+
+export const jalaliDateFormater = (value: Date) =>
+  dateFormater(value).calendar("jalali").format("YYYY-MM-DD");

@@ -1,4 +1,6 @@
 import { PageableQuery } from "@/shared-types";
+import { Category } from "../category/types";
+import { Schedule } from "../schedule/types";
 
 export enum UserType {
   Admin = "Admin",
@@ -36,8 +38,8 @@ export interface User {
   isActive?: boolean;
   password: string;
   //   orders: OrderEntity[];
-  //   workingFields: CategoryEntity[];
-  //   schedules: ScheduleEntity[];
+  workingFields: Category[];
+  schedules: Schedule[];
   //   patientsOrders: OrderEntity[];
   type: UserType;
 }

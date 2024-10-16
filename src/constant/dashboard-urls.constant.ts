@@ -3,6 +3,7 @@ export const DASHBOARD_URLS = {
   users: "/dashboard/users",
   admin_users: "/dashboard/users/admins",
   doctor_users: "/dashboard/users/doctors",
+  doctors_users_detail: (id: number) => `/dashboard/users/doctors/${id}`,
   patient_users: "/dashboard/users/patients",
   categories: "/dashboard/categories",
   locations: "/dashboard/locations",

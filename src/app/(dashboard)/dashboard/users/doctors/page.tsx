@@ -1,13 +1,15 @@
 "use client";
 
+import { DASHBOARD_URLS } from "@/constant/dashboard-urls.constant";
 import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 import { useGetUsers } from "@/services/user/get-users";
-import { Gender, GetUsersQuery, User, UserType } from "@/services/user/types";
+import { GetUsersQuery, User, UserType } from "@/services/user/types";
 import EmptyWrapper from "@/shared-components/empty-wrapper";
 import TableHeader from "@/shared-components/table-header";
 import TableWrapper from "@/shared-components/table-wrapper";
 import { Button, Card, Divider, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
+import { useRouter } from "nextjs-toploader/app";
 import { FC, useMemo, useState } from "react";
 
 const DoctorsPage: FC = () => {
@@ -16,18 +18,19 @@ const DoctorsPage: FC = () => {
 
   const [selectedDoctorToEdit, setSelectedDoctorToEdit] = useState<User>();
 
+  const router = useRouter();
+
   const handleOpenCreateDoctorDialog = () => {
     setCreateOrEditDoctorDialogOpen(true);
+  };
+
+  const handleViewDoctorDetail = (doctor: User) => {
+    router.push(DASHBOARD_URLS.doctors_users_detail(doctor.id));
   };
 
   const handleCloseCreateDoctorDialog = () => {
     setCreateOrEditDoctorDialogOpen(false);
     setSelectedDoctorToEdit(undefined);
-  };
-
-  const handleOpenEditDoctorDialog = (doctor: User) => {
-    setSelectedDoctorToEdit(doctor);
-    setCreateOrEditDoctorDialogOpen(true);
   };
 
   const [queryApi, setQueryApi] = useState<GetUsersQuery>({
@@ -88,28 +91,19 @@ const DoctorsPage: FC = () => {
                 title: "شماره تماس 2",
                 dataIndex: "phone2",
               },
-              {
-                title: "جنسیت",
-                dataIndex: "gender",
-                render: (value: Gender) => {
-                  switch (value) {
-                    case Gender.female:
-                      return "پزشک خانوم";
-                    case Gender.male:
-                      return "پزشک آقا";
-                    default:
-                      return "نامشخص";
-                  }
-                },
-              },
               ...TABLE_DEFAULT_COLUMNS,
               {
                 title: "عملیات",
                 width: 200,
-                render: () => {
+                render: (_: unknown, record: AnyObject) => {
+                  const doctor = record as User;
                   return (
                     <Flex gap="10px" justify="center" align="center">
-                      <Button size="small" type="link">
+                      <Button
+                        onClick={handleViewDoctorDetail.bind(null, doctor)}
+                        size="small"
+                        type="link"
+                      >
                         جزئیات
                       </Button>
                       <Divider style={{ height: "20px" }} type="vertical" />
