@@ -98,14 +98,14 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
       title: "شهر",
       dataIndex: "location",
       render: (location: Location) => {
-        return location.city;
+        return location?.city;
       },
     },
     {
       title: "آدرس",
       dataIndex: "location",
       render: (location: Location) => {
-        return location.address;
+        return location?.address;
       },
     },
     {
@@ -177,6 +177,14 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
         description="آیتمی در چارت رزرو وجود ندارد, برای ساخت آیتم جدید از دکمه زیر استفاده کنید"
         btn={{ text: "افزودن رزرو جدید", click: handleOpenCreateSchedule }}
       >
+        <Flex
+          onClick={handleOpenCreateSchedule}
+          style={{ marginBottom: "14px" }}
+          justify="flex-end"
+          align="center"
+        >
+          <Button type="primary">ثبت رزرو جدید</Button>
+        </Flex>
         <TableWrapper
           loading={isFetchingSchedules || isSchedulesLoading}
           bordered

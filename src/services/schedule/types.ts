@@ -1,5 +1,6 @@
 import { Location } from "@/services/location/types";
 import { User } from "@/services/user/types";
+import { DaysOff } from "../days-off/types";
 
 export enum ScheduleType {
   online = "online",
@@ -18,5 +19,15 @@ export interface Schedule {
   location: Location;
   type: ScheduleType;
   room: number;
-  //   daysOff: DaysOffEntity[];
+  daysOff: DaysOff[];
+}
+
+export interface AddScheduleReqBody {
+  startHour: string;
+  endHour: string;
+  day: number;
+  location: number;
+  room: number;
+  type: ScheduleType;
+  doctor: number;
 }
