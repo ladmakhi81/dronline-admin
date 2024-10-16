@@ -1,12 +1,13 @@
 import dayjs from "dayjs";
-import jalaliDate from "jalaliday";
-
-dayjs.extend(jalaliDate);
+import moment from "moment-jalaali";
 
 export const dateFormater = dayjs;
 
 export const jalaliDateTimeFormater = (value: Date) =>
-  dateFormater(value).calendar("jalali").format("YYYY-MM-DD HH:mm");
+  dateFormater(value).format("YYYY-MM-DD HH:mm");
 
 export const jalaliDateFormater = (value: Date) =>
-  dateFormater(value).calendar("jalali").format("YYYY-MM-DD");
+  dateFormater(value).format("YYYY-MM-DD");
+
+export const convertJalaliToGregorian = (date: string) =>
+  moment(date, "jYYYY-jMM-jDD").format("YYYY-MM-DD");

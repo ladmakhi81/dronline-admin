@@ -7,12 +7,14 @@ import { useGetScheduleByDoctorId } from "@/services/schedule/get-schedule-by-do
 import { Schedule } from "@/services/schedule/types";
 import { User } from "@/services/user/types";
 import DeleteConfirmation from "@/shared-components/delete-confirmation";
+import EmptyWrapper from "@/shared-components/empty-wrapper";
 import TableWrapper from "@/shared-components/table-wrapper";
 import { PageableQuery } from "@/shared-types";
 import { useNotificationStore } from "@/store/notification.store";
 import { Button, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
+import AddScheduleDialog from "../add-schedule-dialog";
 
 interface Props {
   doctor: User;
@@ -24,6 +26,17 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
   );
   const [selectedScheduleToDelete, setSelectedScheduleToDelete] =
     useState<Schedule>();
+
+  const [isCreateScheduleDialogOpen, setCreateScheduleDialogOpen] =
+    useState(false);
+
+  const handleOpenCreateSchedule = () => {
+    setCreateScheduleDialogOpen(true);
+  };
+
+  const handleCloseCreateSchedule = () => {
+    setCreateScheduleDialogOpen(false);
+  };
 
   const [apiQuery, setApiQuery] = useState<PageableQuery>({
     limit: 10,
@@ -136,6 +149,12 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
 
   return (
     <Flex vertical style={{ height: "100%", width: "100%", overflowY: "auto" }}>
+      <AddScheduleDialog
+        doctor={doctor}
+        onClose={handleCloseCreateSchedule}
+        open={isCreateScheduleDialogOpen}
+        refetchSchedules={refetchSchedulesData}
+      />
       {selectedScheduleToDelete && (
         <DeleteConfirmation
           onConfirm={handleConfirmDeleteSchedule}
@@ -152,20 +171,27 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
           )}
         />
       )}
-      <TableWrapper
-        loading={isFetchingSchedules || isSchedulesLoading}
-        bordered
-        dataSource={schedules}
-        size="middle"
-        rowKey="id"
-        columns={columns}
-        pagination={{
-          position: ["bottomCenter"],
-          showSizeChanger: true,
-          onChange: handleChangePage,
-          total: schedulesData?.count ?? 0,
-        }}
-      />
+      <EmptyWrapper
+        isEmpty={schedulesData?.count === 0}
+        title="چارت رزرو"
+        description="آیتمی در چارت رزرو وجود ندارد, برای ساخت آیتم جدید از دکمه زیر استفاده کنید"
+        btn={{ text: "افزودن رزرو جدید", click: handleOpenCreateSchedule }}
+      >
+        <TableWrapper
+          loading={isFetchingSchedules || isSchedulesLoading}
+          bordered
+          dataSource={schedules}
+          size="middle"
+          rowKey="id"
+          columns={columns}
+          pagination={{
+            position: ["bottomCenter"],
+            showSizeChanger: true,
+            onChange: handleChangePage,
+            total: schedulesData?.count ?? 0,
+          }}
+        />
+      </EmptyWrapper>
     </Flex>
   );
 };

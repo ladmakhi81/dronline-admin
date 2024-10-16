@@ -108,19 +108,7 @@ const DoctorsPage: FC = () => {
                       </Button>
                       <Divider style={{ height: "20px" }} type="vertical" />
                       <Button size="small" type="link">
-                        چارت رزرو{" "}
-                      </Button>
-                      <Divider style={{ height: "20px" }} type="vertical" />
-                      <Button size="small" type="link">
-                        مرخصی
-                      </Button>
-                      <Divider style={{ height: "20px" }} type="vertical" />
-                      <Button size="small" type="link">
                         ویرایش گذرواژه
-                      </Button>
-                      <Divider style={{ height: "20px" }} type="vertical" />
-                      <Button size="small" type="link">
-                        ویرایش اطلاعات پایه
                       </Button>
                       <Divider style={{ height: "20px" }} type="vertical" />
                       <Button size="small" type="link">

@@ -15,6 +15,8 @@ import {
 import { Button, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
+import AddDaysOffDialog from "../add-days-off-dialog";
+import EmptyWrapper from "@/shared-components/empty-wrapper";
 
 interface Props {
   doctor: User;
@@ -36,6 +38,17 @@ const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
 
   const [selectedDaysoffToDelete, setSelectedDaysOffToDelete] =
     useState<DaysOff>();
+
+  const [isCreateDaysoffDialogOpen, setCreateDaysoffDialogOpen] =
+    useState(false);
+
+  const handleOpenCreateDaysOffDialog = () => {
+    setCreateDaysoffDialogOpen(true);
+  };
+
+  const handleCloseCreateDaysOffDialog = () => {
+    setCreateDaysoffDialogOpen(false);
+  };
 
   const handleOpenDeleteConfirmation = (daysoffItem: DaysOff) => {
     setSelectedDaysOffToDelete(daysoffItem);
@@ -126,15 +139,39 @@ const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
           )}
         />
       )}
-      <TableWrapper
-        loading={isDaysOffLoading || isDaysOffFetching}
-        bordered
-        dataSource={daysOff}
-        size="middle"
-        rowKey="id"
-        columns={columns}
-        pagination={false}
+      <AddDaysOffDialog
+        onClose={handleCloseCreateDaysOffDialog}
+        open={isCreateDaysoffDialogOpen}
+        refetchDaysOff={refetchDaysOff}
+        doctor={doctor}
       />
+      <EmptyWrapper
+        isEmpty={daysOff.length === 0}
+        title="درخواست مرخصی"
+        description="درخواست مرخصی موجود نیست, برای ایجاد درخواست مرخصی باید روی دکمه زیر کلیک کنید"
+        btn={{
+          text: "درخواست مرخصی جدید",
+          click: handleOpenCreateDaysOffDialog,
+        }}
+      >
+        <Flex
+          onClick={handleOpenCreateDaysOffDialog}
+          style={{ marginBottom: "14px" }}
+          justify="flex-end"
+          align="center"
+        >
+          <Button type="primary">ثبت درخواست مرخصی</Button>
+        </Flex>
+        <TableWrapper
+          loading={isDaysOffLoading || isDaysOffFetching}
+          bordered
+          dataSource={daysOff}
+          size="middle"
+          rowKey="id"
+          columns={columns}
+          pagination={false}
+        />
+      </EmptyWrapper>
     </Flex>
   );
 };

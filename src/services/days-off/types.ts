@@ -7,3 +7,8 @@ export interface DaysOff {
   schedule: Schedule;
   date: string;
 }
+
+export interface AddDaysOffReqBody {
+  schedule: number;
+  date: string;
+}
