@@ -9,7 +9,7 @@ import {
   User,
 } from "@/services/user/types";
 import OperationDrawer from "@/shared-components/operation-drawer";
-import { Form, Input, InputNumber, Radio, Select } from "antd";
+import { Form, Input, Radio, Select } from "antd";
 import { FC, useEffect } from "react";
 import { ADD_OR_EDIT_DOCTOR_VALIDATION_RULES } from "./validation-rules";
 
@@ -45,8 +45,6 @@ const AddOrEditDoctorDialog: FC<Props> = ({
     onConfirm({
       ...data,
       password: data.phone?.toString(),
-      phone: data.phone?.toString(),
-      phone2: data.phone2?.toString(),
     });
     form.resetFields();
   };
@@ -104,7 +102,7 @@ const AddOrEditDoctorDialog: FC<Props> = ({
           label="شماره تماس پزشک"
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.phone}
         >
-          <InputNumber
+          <Input
             style={{ width: "100%" }}
             placeholder="شماره تماس 1"
             size="large"
@@ -115,7 +113,7 @@ const AddOrEditDoctorDialog: FC<Props> = ({
           label="شماره تماس پزشک"
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.phone2}
         >
-          <InputNumber
+          <Input
             style={{ width: "100%" }}
             placeholder="شماره تماس 2"
             size="large"

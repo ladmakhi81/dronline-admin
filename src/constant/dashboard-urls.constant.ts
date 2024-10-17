@@ -47,14 +47,6 @@ export const DASHBOARD_MENU_URLS = [
     label: "لوکیشن سرویس دهنده",
   },
   {
-    key: DASHBOARD_URLS.schedules,
-    label: "شیفت های کاری",
-  },
-  {
-    key: DASHBOARD_URLS.days_off,
-    label: "مرخصی ها",
-  },
-  {
     key: DASHBOARD_URLS.orders,
     label: "نوبت های رزرو",
   },
