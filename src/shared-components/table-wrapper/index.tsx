@@ -7,7 +7,7 @@ import styled from "styled-components";
 const TableWrapper: FC<TableProps> = (tableProps) => {
   return (
     <Container>
-      <Table {...tableProps} />
+      <Table {...tableProps} scroll={{ x: "max-content" }} />
     </Container>
   );
 };

@@ -96,3 +96,7 @@ export type EditUserReqBody =
 export interface EditPasswordReqBody {
   password: string;
 }
+
+export interface UserUploadImageReqBody {
+  filePath?: string;
+}

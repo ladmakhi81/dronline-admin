@@ -16,7 +16,7 @@ import TableWrapper from "@/shared-components/table-wrapper";
 import { Button, Card, Divider, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { useRouter } from "nextjs-toploader/app";
-import { FC, useMemo, useState } from "react";
+import { ChangeEvent, FC, useMemo, useState } from "react";
 import AddOrEditDoctorDialog from "./components/add-or-edit-doctor-dialog";
 import EditPasswordDialog from "../components/edit-password-dialog";
 import { useCreateUser } from "@/services/user/create-user";
@@ -24,6 +24,7 @@ import { useEditUser } from "@/services/user/edit-user";
 import { useNotificationStore } from "@/store/notification.store";
 import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import { useDeleteUser } from "@/services/user/delete-user";
+import { useUploadUserImage } from "@/services/user/upload-image";
 
 const DoctorsPage: FC = () => {
   const [queryApi, setQueryApi] = useState<GetUsersQuery>({
@@ -55,6 +56,8 @@ const DoctorsPage: FC = () => {
     useState<User>();
 
   const router = useRouter();
+
+  const { mutateAsync: uploadDoctorImage } = useUploadUserImage();
 
   const handleOpenCreateDoctorDialog = () => {
     setCreateOrEditDoctorDialogOpen(true);
@@ -139,6 +142,35 @@ const DoctorsPage: FC = () => {
     }));
   };
 
+  const handleChangeProfile = (
+    id: number,
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = Array.from(event.target.files || []).at(0);
+    if (file) {
+      const payload = new FormData();
+      payload.append("image", file);
+      uploadDoctorImage(payload)
+        .then((uploadResponse) => {
+          if (uploadResponse?.filePath) {
+            return editDoctorMutate({
+              image: uploadResponse.filePath,
+              type: UserType.Doctor,
+              id,
+            });
+          }
+        })
+        .then(() => {
+          refetchDoctors();
+          showNotification(
+            "پروفایل پزشک با موفقیت آپلود و ذخیره شد",
+            "success"
+          );
+        })
+        .catch(() => {});
+    }
+  };
+
   const doctors = useMemo(() => {
     return doctorsData?.content || [];
   }, [doctorsData?.content]);
@@ -198,6 +230,24 @@ const DoctorsPage: FC = () => {
               type="link"
             >
               ویرایش حساب کاربری
+            </Button>
+            <Divider style={{ height: "20px" }} type="vertical" />
+            <Button size="small" type="link" style={{ position: "relative" }}>
+              <input
+                style={{
+                  position: "absolute",
+                  height: "100%",
+                  width: "100%",
+                  opacity: 0,
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+                type="file"
+                accept="image/*"
+                onChange={handleChangeProfile.bind(null, doctor.id)}
+              />
+              آپلود تصویر پروفایل
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
