@@ -20,7 +20,7 @@ const EmptyWrapper: FC<Props> = ({
 }) => {
   if (!isEmpty) return children;
   return (
-    <Container vertical>
+    <Container>
       <Empty
         description={
           <Flex vertical>

@@ -16,6 +16,9 @@ export const AntDesignProvider: FC<PropsWithChildren> = ({ children }) => {
         token: {
           ...vazirFont.style,
         },
+        cssVar: true,
+        hashed: false,
+        inherit: true,
       }}
       direction="rtl"
       locale={fa_IR}

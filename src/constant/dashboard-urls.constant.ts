@@ -52,11 +52,7 @@ export const DASHBOARD_MENU_URLS = [
   },
   {
     key: DASHBOARD_URLS.transactions,
-    label: "تراکنش ها",
-  },
-  {
-    key: DASHBOARD_URLS.payments,
-    label: "پرداخت ها",
+    label: "تراکنش و پرداخت",
   },
   {
     key: DASHBOARD_URLS.tickets,
