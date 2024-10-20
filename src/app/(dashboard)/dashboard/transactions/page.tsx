@@ -102,7 +102,7 @@ const TransactionsPage: FC = () => {
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
-              disabled={transaction.status === TransactionStatus.NotPayed}
+              disabled={transaction.status === TransactionStatus.Payed}
               size="small"
               type="link"
               onClick={handleCopyPayLinkURL.bind(null, transaction)}

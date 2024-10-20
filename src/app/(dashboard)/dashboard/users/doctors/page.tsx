@@ -265,44 +265,49 @@ const DoctorsPage: FC = () => {
 
   return (
     <Flex vertical style={{ height: "100%" }} gap="24px">
-      <TableHeader
-        headTitle="لیست پزشکان سایت"
-        createText="افزودن پزشک جدید"
-        onCreate={handleOpenCreateDoctorDialog}
+      <EditPasswordDialog
+        onClose={handleCloseEditDoctorPassword}
+        open={!!selectedDoctorToEditPassword}
+        user={selectedDoctorToEditPassword}
       />
-      <Card
-        style={{ flex: 1 }}
-        styles={{ body: { padding: "15px", height: "100%" } }}
+      <AddOrEditDoctorDialog
+        open={isCreateOrEditDoctorDialogOpen}
+        onClose={handleCloseCreateOrEditDoctorDialog}
+        onConfirm={handleConfirmCreateOrEditDoctor}
+        selectedDoctor={selectedDoctorToEdit}
+      />
+      <DeleteConfirmation
+        title="حذف پزشک"
+        renderBody={() => (
+          <>
+            آیا از حذف پزشک {selectedDoctorToDelete?.firstName}{" "}
+            {selectedDoctorToDelete?.lastName} با شماره پرونده{" "}
+            {selectedDoctorToDelete?.id} اطمینان دارید؟
+          </>
+        )}
+        onClose={handleCloseDeleteDoctorConfirmation}
+        onConfirm={handleConfirmDeleteDoctor}
+        open={!!selectedDoctorToDelete}
+      />
+
+      <EmptyWrapper
+        isEmpty={doctorsData?.count === 0}
+        title="لیست پزشکان"
+        description="پزشکی ایجاد نشده,برای ساخت پزشک روی افزودن پزشک جدید کلیک کنید "
+        btn={{
+          text: "افزودن پزشک جدید",
+          click: handleOpenCreateDoctorDialog,
+        }}
       >
-        <EmptyWrapper
-          isEmpty={doctorsData?.count === 0}
-          title="لیست پزشکان"
-          description="پزشکی ایجاد نشده,برای ساخت پزشک روی افزودن پزشک جدید کلیک کنید "
+        <TableHeader
+          headTitle="لیست پزشکان سایت"
+          createText="افزودن پزشک جدید"
+          onCreate={handleOpenCreateDoctorDialog}
+        />
+        <Card
+          style={{ flex: 1 }}
+          styles={{ body: { padding: "15px", height: "100%" } }}
         >
-          <EditPasswordDialog
-            onClose={handleCloseEditDoctorPassword}
-            open={!!selectedDoctorToEditPassword}
-            user={selectedDoctorToEditPassword}
-          />
-          <AddOrEditDoctorDialog
-            open={isCreateOrEditDoctorDialogOpen}
-            onClose={handleCloseCreateOrEditDoctorDialog}
-            onConfirm={handleConfirmCreateOrEditDoctor}
-            selectedDoctor={selectedDoctorToEdit}
-          />
-          <DeleteConfirmation
-            title="حذف پزشک"
-            renderBody={() => (
-              <>
-                آیا از حذف پزشک {selectedDoctorToDelete?.firstName}{" "}
-                {selectedDoctorToDelete?.lastName} با شماره پرونده{" "}
-                {selectedDoctorToDelete?.id} اطمینان دارید؟
-              </>
-            )}
-            onClose={handleCloseDeleteDoctorConfirmation}
-            onConfirm={handleConfirmDeleteDoctor}
-            open={!!selectedDoctorToDelete}
-          />
           <TableWrapper
             rowKey="id"
             bordered
@@ -316,8 +321,8 @@ const DoctorsPage: FC = () => {
               total: doctorsData?.count ?? 0,
             }}
           />
-        </EmptyWrapper>
-      </Card>
+        </Card>
+      </EmptyWrapper>
     </Flex>
   );
 };

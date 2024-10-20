@@ -1,3 +1,4 @@
+import { PageableQuery } from "@/shared-types";
 import { ScheduleType } from "../schedule/types";
 import { Transaction } from "../transaction/types";
 import { User } from "../user/types";
@@ -27,3 +28,17 @@ export interface Order {
   status: OrderStatus;
   transaction: Transaction;
 }
+
+export interface SubmitOrderReqBody {
+  patient: number;
+  type: ScheduleType;
+  schedule: number;
+  date: string;
+}
+
+export type GetOrderQuery = PageableQuery<{
+  ["date.gte"]?: string;
+  doctor?: number;
+  startHour?: string;
+  endHour?: string;
+}>;

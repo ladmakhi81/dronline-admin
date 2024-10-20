@@ -1,6 +1,7 @@
 import { Location } from "@/services/location/types";
 import { User } from "@/services/user/types";
 import { DaysOff } from "../days-off/types";
+import { PageableQuery } from "@/shared-types";
 
 export enum ScheduleType {
   online = "online",
@@ -31,3 +32,9 @@ export interface AddScheduleReqBody {
   type: ScheduleType;
   doctor: number;
 }
+
+export type GetSchedulesQuery = PageableQuery<{
+  day?: number;
+  doctor?: number;
+  type?: ScheduleType;
+}>;

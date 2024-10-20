@@ -5,7 +5,7 @@ import { WEEK_DAY } from "@/constant/weekday.constant";
 import { useCancelOrder } from "@/services/order/cancel-order";
 import { useDeleteOrder } from "@/services/order/delete-order";
 import { useGetOrders } from "@/services/order/get-orders";
-import { Order, OrderStatus } from "@/services/order/types";
+import { GetOrderQuery, Order, OrderStatus } from "@/services/order/types";
 import { User } from "@/services/user/types";
 import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import EmptyWrapper from "@/shared-components/empty-wrapper";
@@ -13,15 +13,15 @@ import OrderDetailDialog from "@/shared-components/order-detail-dialog";
 import TableHeader from "@/shared-components/table-header";
 import TableWrapper from "@/shared-components/table-wrapper";
 import TransactionDetailDialog from "@/shared-components/transaction-detail-dialog";
-import { PageableQuery } from "@/shared-types";
 import { useNotificationStore } from "@/store/notification.store";
 import { jalaliDateFormater } from "@/utils/date-format";
 import { Button, Card, Divider, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
+import SubmitOrderDialog from "./components/submit-order-dialog";
 
 const OrdersPage: FC = () => {
-  const [apiQuery, setApiQuery] = useState<PageableQuery>({
+  const [apiQuery, setApiQuery] = useState<GetOrderQuery>({
     limit: 10,
     page: 0,
   });
@@ -29,6 +29,8 @@ const OrdersPage: FC = () => {
   const { data: ordersData, refetch: refetchOrders } = useGetOrders(apiQuery);
 
   const [selectedOrderToDelete, setSelectedOrderToDelete] = useState<Order>();
+
+  const [isSubmitOrderDialogOpen, setSubmitOrderDialogOpen] = useState(false);
 
   const { mutateAsync: cancelOrderMutate } = useCancelOrder();
 
@@ -47,7 +49,13 @@ const OrdersPage: FC = () => {
     return ordersData?.content || [];
   }, [ordersData?.content]);
 
-  const handleCreateOrder = () => {};
+  const handleOpenSubmitOrderDialog = () => {
+    setSubmitOrderDialogOpen(true);
+  };
+
+  const handleCloseSubmitOrderDialog = () => {
+    setSubmitOrderDialogOpen(false);
+  };
 
   const handleOpenViewOrderDialog = (order: Order) => {
     setSelectedOrderToView(order);
@@ -112,7 +120,7 @@ const OrdersPage: FC = () => {
       render: (doctor: User) => doctor.firstName + " " + doctor.lastName,
     },
     {
-      dataIndex: "title",
+      dataIndex: "date",
       title: "تاریخ نوبت",
       render: (date: Date) => jalaliDateFormater(date),
     },
@@ -189,16 +197,21 @@ const OrdersPage: FC = () => {
 
   return (
     <Flex style={{ height: "100%", overflow: "auto" }} vertical gap="24px">
+      <SubmitOrderDialog
+        onClose={handleCloseSubmitOrderDialog}
+        open={isSubmitOrderDialogOpen}
+        refetchOrders={refetchOrders}
+      />
       <EmptyWrapper
         isEmpty={ordersData?.count === 0}
         title="لیست نوبت های رزرو شده"
         description="نوبت رزرو شده ای یافت نشد, برای ثبت رزرو نوبت از دکمه زیر استفاده کنید"
-        btn={{ click: handleCreateOrder, text: "ثبت رزرو نوبت" }}
+        btn={{ click: handleOpenSubmitOrderDialog, text: "ثبت رزرو نوبت" }}
       >
         <TableHeader
           headTitle="لیست نوبت های رزرو شده"
           createText="ثبت نوبت جدید"
-          onCreate={handleCreateOrder}
+          onCreate={handleOpenSubmitOrderDialog}
         />
         <Card
           style={{ flex: 1 }}
@@ -211,6 +224,7 @@ const OrdersPage: FC = () => {
               order={selectedOrderToView}
             />
           )}
+
           {!!selectedTransactionOrderToView && (
             <TransactionDetailDialog
               onClose={handleCloseViewTransactionOrderDialog}

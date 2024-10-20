@@ -168,11 +168,6 @@ const PatientsPage: FC = () => {
 
   return (
     <Flex style={{ height: "100%" }} vertical gap="24px">
-      <TableHeader
-        createText="افزودن بیمار جدید"
-        headTitle="لیست بیماران"
-        onCreate={handleOpenCreatePatientDialog}
-      />
       <EditPasswordDialog
         onClose={handleCloseEditPasswordDialog}
         open={!!selectedUserToEditPassword}
@@ -197,14 +192,24 @@ const PatientsPage: FC = () => {
         )}
         title="حذف بیمار"
       />
-      <Card
-        style={{ flex: 1 }}
-        styles={{ body: { padding: "15px", height: "100%" } }}
+
+      <EmptyWrapper
+        isEmpty={patientsData?.count === 0}
+        title="لیست بیماران"
+        description="بیماری ایجاد نشده است, برای ساخت بیمار روی افزودن بیمار کلیک کنید"
+        btn={{
+          click: handleOpenCreatePatientDialog,
+          text: "افزودن بیمار جدید",
+        }}
       >
-        <EmptyWrapper
-          isEmpty={patientsData?.count === 0}
-          title="لیست بیماران"
-          description="بیماری ایجاد نشده است, برای ساخت بیمار روی افزودن بیمار کلیک کنید"
+        <TableHeader
+          createText="افزودن بیمار جدید"
+          headTitle="لیست بیماران"
+          onCreate={handleOpenCreatePatientDialog}
+        />
+        <Card
+          style={{ flex: 1 }}
+          styles={{ body: { padding: "15px", height: "100%" } }}
         >
           <TableWrapper
             bordered
@@ -219,8 +224,8 @@ const PatientsPage: FC = () => {
               onChange: handlePageChange,
             }}
           />
-        </EmptyWrapper>
-      </Card>
+        </Card>
+      </EmptyWrapper>
     </Flex>
   );
 };

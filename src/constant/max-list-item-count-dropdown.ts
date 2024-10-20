@@ -1,0 +1,1 @@
+export const MAX_LIST_COUNT_SELECT = 10000;

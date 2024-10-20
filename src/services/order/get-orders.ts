@@ -1,13 +1,13 @@
 import { httpClient } from "@/core/http-client.core";
-import { PageableApi, PageableQuery } from "@/shared-types";
-import { Order } from "./types";
+import { PageableApi } from "@/shared-types";
+import { GetOrderQuery, Order } from "./types";
 import { useQuery } from "@tanstack/react-query";
 
-const getOrders = (params: PageableQuery) => {
+const getOrders = (params: GetOrderQuery) => {
   return httpClient.get("/orders", { params }) as Promise<PageableApi<Order>>;
 };
 
-export const useGetOrders = (params: PageableQuery) => {
+export const useGetOrders = (params: GetOrderQuery) => {
   return useQuery({
     queryKey: ["orders", params],
     queryFn: () => getOrders(params),
