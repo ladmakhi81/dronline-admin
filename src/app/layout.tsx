@@ -19,7 +19,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <ReactQueryProvider>
           <NotificationProvider>
             <AntDesignProvider>
-              <NextTopLoader />
+              <NextTopLoader showSpinner={false} />
               {children}
             </AntDesignProvider>
           </NotificationProvider>

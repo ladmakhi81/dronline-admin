@@ -1,9 +1,7 @@
-"use client";
-
 import { FC } from "react";
 
-const HomePage: FC = () => {
+const DashboardPage: FC = () => {
   return <></>;
 };
 
-export default HomePage;
+export default DashboardPage;

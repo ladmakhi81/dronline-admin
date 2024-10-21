@@ -154,19 +154,24 @@ const LocationsPage: FC = () => {
           </Typography.Text>
         )}
       />
-      <TableHeader
-        createText="ساخت لوکیشن"
-        headTitle="لیست لوکیشن های سرویس دهنده"
-        onCreate={handleCreateLocation}
-      />
-      <Card
-        style={{ flex: 1 }}
-        styles={{ body: { padding: "15px", height: "100%" } }}
+
+      <EmptyWrapper
+        description="ابتدا باید لوکیشن سرویس دهنده ای ایجاد کنید"
+        title="لوکیشن سرویس دهنده"
+        isEmpty={locations.length === 0}
+        btn={{
+          click: handleCreateLocation,
+          text: "ساخت لوکیشن",
+        }}
       >
-        <EmptyWrapper
-          description="ابتدا باید لوکیشن سرویس دهنده ای ایجاد کنید"
-          title="لوکیشن سرویس دهنده"
-          isEmpty={locations.length === 0}
+        <TableHeader
+          createText="ساخت لوکیشن"
+          headTitle="لیست لوکیشن های سرویس دهنده"
+          onCreate={handleCreateLocation}
+        />
+        <Card
+          style={{ flex: 1 }}
+          styles={{ body: { padding: "15px", height: "100%" } }}
         >
           <TableWrapper
             loading={isLocationLoading || isFetchingLocation}
@@ -182,8 +187,8 @@ const LocationsPage: FC = () => {
               onChange: handlePagination,
             }}
           />
-        </EmptyWrapper>
-      </Card>
+        </Card>
+      </EmptyWrapper>
     </Flex>
   );
 };

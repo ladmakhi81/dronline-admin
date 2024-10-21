@@ -66,6 +66,8 @@ const SubmitOrderDateForm: FC<Props> = ({
     if (selectedSchedule) {
       handleChangeOrderApiQuery({
         doctor: selectedSchedule.doctor.id,
+        startHour: selectedSchedule.startHour,
+        endHour: selectedSchedule.endHour,
       });
     }
   }, [selectedSchedule]);

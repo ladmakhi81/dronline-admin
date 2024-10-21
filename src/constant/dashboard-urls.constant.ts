@@ -12,7 +12,6 @@ export const DASHBOARD_URLS = {
   orders: "/dashboard/orders",
   transactions: "/dashboard/transactions",
   payments: "/dashboard/payments",
-  tickets: "/dashboard/tickets",
 } as const;
 
 export const DASHBOARD_MENU_URLS = [
@@ -53,9 +52,5 @@ export const DASHBOARD_MENU_URLS = [
   {
     key: DASHBOARD_URLS.transactions,
     label: "تراکنش و پرداخت",
-  },
-  {
-    key: DASHBOARD_URLS.tickets,
-    label: "تیکت و پشتیبانی",
   },
 ];

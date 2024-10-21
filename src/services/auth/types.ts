@@ -8,3 +8,8 @@ export interface LoginResponseDto {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface GetRefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+}

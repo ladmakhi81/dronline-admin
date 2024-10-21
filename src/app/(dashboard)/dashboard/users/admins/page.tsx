@@ -176,44 +176,48 @@ const AdminsPage: FC = () => {
 
   return (
     <Flex style={{ height: "100%" }} vertical gap="24px">
-      <TableHeader
-        createText="افزودن ادمین جدید"
-        headTitle="لیست ادمین ها"
-        onCreate={handleOpenCreateAdminDialog}
-      />
-      <Card
-        style={{ flex: 1 }}
-        styles={{ body: { padding: "15px", height: "100%" } }}
+      <EmptyWrapper
+        isEmpty={adminsData?.count === 0}
+        title="لیست ادمین ها"
+        description="ادمینی ایجاد نشده است, برای ساخت ادمین روی افزودن ادمین کلیک کنید"
+        btn={{
+          click: handleOpenCreateAdminDialog,
+          text: "افزودن ادمین جدید",
+        }}
       >
-        <EmptyWrapper
-          isEmpty={adminsData?.count === 0}
-          title="لیست ادمین ها"
-          description="ادمینی ایجاد نشده است, برای ساخت ادمین روی افزودن ادمین کلیک کنید"
+        <CreateOrEditAdminDialog
+          onClose={handleCloseCreateOrEditAdminDialog}
+          open={isCreateOrEditAdminDialogOpen}
+          selectedAdmin={selectedAdminToEdit}
+          refetchAdmins={refetchAdmins}
+        />
+        <EditPasswordDialog
+          onClose={handleCloseEditPasswordDialog}
+          open={!!selectedAdminToEditPassword}
+          user={selectedAdminToEditPassword}
+        />
+        <DeleteConfirmation
+          onClose={handleCloseDeleteAdminConfirmation}
+          onConfirm={handleConfirmDeleteAdmin}
+          title="حذف ادمین"
+          open={!!selectedAdminToDelete}
+          renderBody={() => (
+            <>
+              آیا از حذف ادمین {selectedAdminToDelete?.firstName}{" "}
+              {selectedAdminToDelete?.lastName} با شماره سریال{" "}
+              {selectedAdminToDelete?.id} اطمینان دارید ؟
+            </>
+          )}
+        />
+        <TableHeader
+          createText="افزودن ادمین جدید"
+          headTitle="لیست ادمین ها"
+          onCreate={handleOpenCreateAdminDialog}
+        />
+        <Card
+          style={{ flex: 1 }}
+          styles={{ body: { padding: "15px", height: "100%" } }}
         >
-          <CreateOrEditAdminDialog
-            onClose={handleCloseCreateOrEditAdminDialog}
-            open={isCreateOrEditAdminDialogOpen}
-            selectedAdmin={selectedAdminToEdit}
-            refetchAdmins={refetchAdmins}
-          />
-          <EditPasswordDialog
-            onClose={handleCloseEditPasswordDialog}
-            open={!!selectedAdminToEditPassword}
-            user={selectedAdminToEditPassword}
-          />
-          <DeleteConfirmation
-            onClose={handleCloseDeleteAdminConfirmation}
-            onConfirm={handleConfirmDeleteAdmin}
-            title="حذف ادمین"
-            open={!!selectedAdminToDelete}
-            renderBody={() => (
-              <>
-                آیا از حذف ادمین {selectedAdminToDelete?.firstName}{" "}
-                {selectedAdminToDelete?.lastName} با شماره سریال{" "}
-                {selectedAdminToDelete?.id} اطمینان دارید ؟
-              </>
-            )}
-          />
           <TableWrapper
             dataSource={admins}
             bordered
@@ -227,8 +231,8 @@ const AdminsPage: FC = () => {
             }}
             columns={columns}
           />
-        </EmptyWrapper>
-      </Card>
+        </Card>
+      </EmptyWrapper>
     </Flex>
   );
 };

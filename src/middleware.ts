@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ACCESS_TOKEN } from "./constant/token.constant";
 import { jwtDecode } from "jwt-decode";
+import { DASHBOARD_URLS } from "./constant/dashboard-urls.constant";
 
 export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get(ACCESS_TOKEN)?.value;
@@ -8,7 +9,11 @@ export function middleware(request: NextRequest) {
     const decodedToken = jwtDecode(accessToken);
     const hasExpTime = (decodedToken.exp ?? 0) * 1000 - new Date().getTime();
     if (hasExpTime) {
-      console.log("user logged in");
+      if (request.nextUrl.pathname === "/") {
+        return NextResponse.redirect(
+          new URL(DASHBOARD_URLS.dashboard, request.url)
+        );
+      }
       return;
     }
   }
@@ -16,5 +21,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/"],
 };

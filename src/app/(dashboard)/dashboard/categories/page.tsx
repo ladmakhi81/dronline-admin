@@ -146,11 +146,6 @@ const CategoriesPage: FC = () => {
 
   return (
     <Flex style={{ height: "100%" }} vertical gap="24px">
-      <TableHeader
-        createText="افزودن زمینه تخصصی جدید"
-        headTitle="لیست زمینه های تخصصی ارائه شده"
-        onCreate={handleOpenAddCategoryDialog}
-      />
       <DeleteConfirmation
         open={!!selectedCategoryToDelete}
         title="حذف زمینه تخصصی"
@@ -169,14 +164,24 @@ const CategoriesPage: FC = () => {
         refetchCategories={refetchCategories}
         selectedCategory={selectedCategoryToEdit}
       />
-      <Card
-        style={{ flex: 1 }}
-        styles={{ body: { padding: "15px", height: "100%" } }}
+
+      <EmptyWrapper
+        isEmpty={categoriesData?.count === 0}
+        title="لیست زمینه های تخصصی"
+        description="آیتمی وجود ندارد, از طریق دکمه افزودن زمینه تخصصی جدید, یک آیتم جدید ایجاد کنید"
+        btn={{
+          click: handleOpenAddCategoryDialog,
+          text: "افزودن زمینه تخصصی جدید",
+        }}
       >
-        <EmptyWrapper
-          isEmpty={categoriesData?.count === 0}
-          title="لیست زمینه های تخصصی"
-          description="آیتمی وجود ندارد, از طریق دکمه افزودن زمینه تخصصی جدید, یک آیتم جدید ایجاد کنید"
+        <TableHeader
+          createText="افزودن زمینه تخصصی جدید"
+          headTitle="لیست زمینه های تخصصی ارائه شده"
+          onCreate={handleOpenAddCategoryDialog}
+        />
+        <Card
+          style={{ flex: 1 }}
+          styles={{ body: { padding: "15px", height: "100%" } }}
         >
           <TableWrapper
             loading={isCategoriesFetching || isCategoriesLoading}
@@ -192,8 +197,8 @@ const CategoriesPage: FC = () => {
               onChange: handlePageChange,
             }}
           />
-        </EmptyWrapper>
-      </Card>
+        </Card>
+      </EmptyWrapper>
     </Flex>
   );
 };

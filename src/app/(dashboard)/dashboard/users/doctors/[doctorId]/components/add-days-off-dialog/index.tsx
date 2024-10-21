@@ -1,17 +1,17 @@
 "use client";
 
-import { WEEK_DAY } from "@/constant/weekday.constant";
+import { GEOGRIAN_WEEK_DAY, WEEK_DAY } from "@/constant/weekday.constant";
 import { useGetScheduleByDoctorId } from "@/services/schedule/get-schedule-by-doctor-id";
 import { User } from "@/services/user/types";
 import OperationDrawer from "@/shared-components/operation-drawer";
 import { convertJalaliToGregorian } from "@/utils/date-format";
-import { Form, Select } from "antd";
-import { DatePicker } from "antd-jalali";
+import { DatePicker, Form, Select } from "antd";
 import { FC, useMemo } from "react";
 import { ADD_DAYS_OFF_VALIDATION_RULES } from "./validation-rules";
 import { useAddDaysOff } from "@/services/days-off/add-days-off";
 import { Dayjs } from "dayjs";
 import { useNotificationStore } from "@/store/notification.store";
+import moment, { now } from "moment-jalaali";
 
 interface Props {
   open: boolean;
@@ -35,6 +35,8 @@ const AddDaysOffDialog: FC<Props> = ({
 }) => {
   const [form] = Form.useForm<FieldTypes>();
 
+  const formWatched = Form.useWatch([], form);
+
   const showNotification = useNotificationStore(
     (state) => state.addNotification
   );
@@ -46,6 +48,14 @@ const AddDaysOffDialog: FC<Props> = ({
       limit: MAX_LIST_COUNT,
       page: 0,
     });
+
+  const selectedScheduleFormItem = formWatched?.schedule;
+
+  const selectedSchedule = useMemo(() => {
+    return schedulesData?.content?.find(
+      (schedule) => schedule.id === selectedScheduleFormItem
+    );
+  }, [schedulesData?.content, selectedScheduleFormItem]);
 
   const handleClose = () => {
     onClose();
@@ -63,6 +73,16 @@ const AddDaysOffDialog: FC<Props> = ({
         form.resetFields();
       })
       .catch(() => {});
+  };
+
+  const getDisabledDate = (date: Dayjs) => {
+    const isNotSameDay =
+      GEOGRIAN_WEEK_DAY.get(date.format("dddd")) !== selectedSchedule?.day;
+    const isPast = moment(date.format("YYYY-MM-DD"), "jYYYY-jMM-jDD").isBefore(
+      now()
+    );
+
+    return isNotSameDay || isPast;
   };
 
   const schedulesOptions = useMemo(() => {
@@ -112,7 +132,12 @@ const AddDaysOffDialog: FC<Props> = ({
           name="date"
           label="تاریخ درخواست مرخصی"
         >
-          <DatePicker size="large" style={{ width: "100%" }} />
+          <DatePicker
+            disabled={!selectedScheduleFormItem}
+            disabledDate={getDisabledDate}
+            size="large"
+            style={{ width: "100%" }}
+          />
         </Form.Item>
       </Form>
     </OperationDrawer>
