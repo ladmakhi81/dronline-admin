@@ -14,43 +14,44 @@ export const DASHBOARD_URLS = {
   payments: "/dashboard/payments",
 } as const;
 
-export const DASHBOARD_MENU_URLS = [
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const DASHBOARD_MENU_URLS = (t: any) => [
   {
     key: DASHBOARD_URLS.dashboard,
-    label: "داشبورد",
+    label: t("dashboard"),
   },
   {
     key: DASHBOARD_URLS.users,
-    label: "کاربران",
+    label: t("users"),
     children: [
       {
         key: DASHBOARD_URLS.admin_users,
-        label: "لیست ادمین ها",
+        label: t("admins"),
       },
       {
         key: DASHBOARD_URLS.doctor_users,
-        label: "لیست پزشکان",
+        label: t("doctors"),
       },
       {
         key: DASHBOARD_URLS.patient_users,
-        label: "لیست بیماران",
+        label: t("patients"),
       },
     ],
   },
   {
     key: DASHBOARD_URLS.categories,
-    label: "زمینه های تخصصی",
+    label: t("categories"),
   },
   {
     key: DASHBOARD_URLS.locations,
-    label: "لوکیشن سرویس دهنده",
+    label: t("locations"),
   },
   {
     key: DASHBOARD_URLS.orders,
-    label: "نوبت های رزرو",
+    label: t("orders"),
   },
   {
     key: DASHBOARD_URLS.transactions,
-    label: "تراکنش و پرداخت",
+    label: t("transactions"),
   },
 ];

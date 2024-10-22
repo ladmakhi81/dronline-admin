@@ -8,7 +8,6 @@ import AddOrEditCategoryDialog from "./components/add-or-edit-category-dialog";
 import { Category, GetCategoriesQuery } from "@/services/category/types";
 import { useGetCategories } from "@/services/category/get-categories";
 import TableWrapper from "@/shared-components/table-wrapper";
-import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 import { staticFileLoader } from "@/utils/static-file-loader";
 import Image from "next/image";
 import { AnyObject } from "antd/es/_util/type";
@@ -16,6 +15,7 @@ import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import { useDeleteCategory } from "@/services/category/delete-category";
 import { useNotificationStore } from "@/store/notification.store";
 import { useTranslations } from "next-intl";
+import { jalaliDateTimeFormater } from "@/utils/date-format";
 
 const CategoriesPage: FC = () => {
   const { mutateAsync: deleteCategoryMutate } = useDeleteCategory();
@@ -113,7 +113,22 @@ const CategoriesPage: FC = () => {
       title: t("category-name"),
       dataIndex: "name",
     },
-    ...TABLE_DEFAULT_COLUMNS,
+    {
+      title: tGlobal("created-at"),
+      dataIndex: "createdAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
+    {
+      title: tGlobal("updated-at"),
+      dataIndex: "updatedAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
     {
       title: tGlobal("operation"),
       width: 200,

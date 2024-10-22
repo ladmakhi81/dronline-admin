@@ -9,12 +9,12 @@ import { Button, Card, Divider, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
 import AddOrEditPatientDialog from "./components/add-or-edit-patient-dialog";
-import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import { useDeleteUser } from "@/services/user/delete-user";
 import { useNotificationStore } from "@/store/notification.store";
 import EditPasswordDialog from "../components/edit-password-dialog";
 import { useTranslations } from "next-intl";
+import { jalaliDateTimeFormater } from "@/utils/date-format";
 
 const PatientsPage: FC = () => {
   const t = useTranslations("users.patients-page");
@@ -128,7 +128,22 @@ const PatientsPage: FC = () => {
       dataIndex: "ordersCount",
       render: () => 0,
     },
-    ...TABLE_DEFAULT_COLUMNS,
+    {
+      title: tGlobal("created-at"),
+      dataIndex: "createdAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
+    {
+      title: tGlobal("updated-at"),
+      dataIndex: "updatedAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
     {
       title: tGlobal("operation"),
       width: 200,

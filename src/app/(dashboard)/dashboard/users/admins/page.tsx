@@ -1,6 +1,5 @@
 "use client";
 
-import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 import { useGetUsers } from "@/services/user/get-users";
 import { GetUsersQuery, User, UserType } from "@/services/user/types";
 import EmptyWrapper from "@/shared-components/empty-wrapper";
@@ -16,6 +15,7 @@ import { useNotificationStore } from "@/store/notification.store";
 import { useEditUser } from "@/services/user/edit-user";
 import CreateOrEditAdminDialog from "./components/create-or-edit-admin-dialog";
 import { useTranslations } from "next-intl";
+import { jalaliDateTimeFormater } from "@/utils/date-format";
 
 const AdminsPage: FC = () => {
   const t = useTranslations("users.admins-page");
@@ -140,7 +140,22 @@ const AdminsPage: FC = () => {
       ),
       width: 150,
     },
-    ...TABLE_DEFAULT_COLUMNS,
+    {
+      title: tGlobal("created-at"),
+      dataIndex: "createdAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
+    {
+      title: tGlobal("updated-at"),
+      dataIndex: "updatedAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
     {
       title: tGlobal("operation"),
       width: 200,

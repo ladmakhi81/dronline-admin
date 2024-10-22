@@ -13,8 +13,8 @@ import { useDeleteLocation } from "@/services/location/delete-location";
 import { useNotificationStore } from "@/store/notification.store";
 import EmptyWrapper from "@/shared-components/empty-wrapper";
 import TableHeader from "@/shared-components/table-header";
-import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 import { useTranslations } from "next-intl";
+import { jalaliDateTimeFormater } from "@/utils/date-format";
 
 const LocationsPage: FC = () => {
   const [searchQuery, setSearchQuery] = useState<GetLocationsQuery>({});
@@ -109,7 +109,22 @@ const LocationsPage: FC = () => {
         return value.length;
       },
     },
-    ...TABLE_DEFAULT_COLUMNS,
+    {
+      title: tGlobal("created-at"),
+      dataIndex: "createdAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
+    {
+      title: tGlobal("updated-at"),
+      dataIndex: "updatedAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
     {
       title: tGlobal("operation"),
       width: 200,

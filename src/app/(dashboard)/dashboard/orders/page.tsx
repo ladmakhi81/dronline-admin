@@ -1,6 +1,5 @@
 "use client";
 
-import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 import { WEEK_DAY } from "@/constant/weekday.constant";
 import { useCancelOrder } from "@/services/order/cancel-order";
 import { useDeleteOrder } from "@/services/order/delete-order";
@@ -14,7 +13,10 @@ import TableHeader from "@/shared-components/table-header";
 import TableWrapper from "@/shared-components/table-wrapper";
 import TransactionDetailDialog from "@/shared-components/transaction-detail-dialog";
 import { useNotificationStore } from "@/store/notification.store";
-import { jalaliDateFormater } from "@/utils/date-format";
+import {
+  jalaliDateFormater,
+  jalaliDateTimeFormater,
+} from "@/utils/date-format";
 import { Button, Card, Divider, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
@@ -149,7 +151,22 @@ const OrdersPage: FC = () => {
       dataIndex: "type",
       title: t("type"),
     },
-    ...TABLE_DEFAULT_COLUMNS,
+    {
+      title: t("created-at"),
+      dataIndex: "createdAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
+    {
+      title: t("updated-at"),
+      dataIndex: "updatedAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
     {
       title: tGlobal("operation"),
       width: 200,

@@ -1,4 +1,15 @@
 {
+  "menus": {
+    "dashboard": "داشبورد",
+    "users": "کاربران",
+    "admins": "لیست ادمین ها",
+    "doctors": "لیست پزشکان",
+    "patients": "لیست بیماران",
+    "categories": "زمینه های تخصصی",
+    "locations": "لوکیشن سرویس دهنده",
+    "orders": "نوبت های رزرو",
+    "transactions": "تراکنش و پرداخت"
+  },
   "globals": {
     "delete": "حذف",
     "edit": "ویرایش",
@@ -15,7 +26,9 @@
     "unknown": "نامشخص",
     "both": "حضوری و آنلاین",
     "online": "آنلاین",
-    "onsite": "آنلاین"
+    "onsite": "آنلاین",
+    "created_at": "تاریخ ساخت",
+    "updated_at": "تاریخ ویرایش"
   },
   "common": {
     "order-detail-modal": {

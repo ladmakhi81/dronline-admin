@@ -1,7 +1,6 @@
 "use client";
 
 import { DASHBOARD_URLS } from "@/constant/dashboard-urls.constant";
-import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 import { useGetUsers } from "@/services/user/get-users";
 import {
   CreateDoctorReqBody,
@@ -26,6 +25,7 @@ import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import { useDeleteUser } from "@/services/user/delete-user";
 import { useUploadUserImage } from "@/services/user/upload-image";
 import { useTranslations } from "next-intl";
+import { jalaliDateTimeFormater } from "@/utils/date-format";
 
 const DoctorsPage: FC = () => {
   const t = useTranslations("users.admins-page");
@@ -201,7 +201,22 @@ const DoctorsPage: FC = () => {
       title: t("phone-2"),
       dataIndex: "phone2",
     },
-    ...TABLE_DEFAULT_COLUMNS,
+    {
+      title: tGlobal("created-at"),
+      dataIndex: "createdAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
+    {
+      title: tGlobal("updated-at"),
+      dataIndex: "updatedAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
     {
       title: tGlobal("operation"),
       width: 200,

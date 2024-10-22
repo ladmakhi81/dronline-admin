@@ -1,6 +1,5 @@
 "use client";
 
-import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
 import { useGetTransactions } from "@/services/transaction/get-transactions";
 import { Transaction, TransactionStatus } from "@/services/transaction/types";
 import { User } from "@/services/user/types";
@@ -15,6 +14,7 @@ import { FC, useMemo, useState } from "react";
 import OrderDetailDialog from "@/shared-components/order-detail-dialog";
 import TransactionDetailDialog from "@/shared-components/transaction-detail-dialog";
 import { useTranslations } from "next-intl";
+import { jalaliDateTimeFormater } from "@/utils/date-format";
 
 const TransactionsPage: FC = () => {
   const t = useTranslations("transactions-page");
@@ -89,7 +89,22 @@ const TransactionsPage: FC = () => {
       dataIndex: "status",
       title: t("status"),
     },
-    ...TABLE_DEFAULT_COLUMNS,
+    {
+      title: tGlobal("created-at"),
+      dataIndex: "createdAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
+    {
+      title: tGlobal("updated-at"),
+      dataIndex: "updatedAt",
+      width: 200,
+      render: (value: string) => {
+        return jalaliDateTimeFormater(new Date(value));
+      },
+    },
     {
       title: tGlobal("operation"),
       width: 200,
