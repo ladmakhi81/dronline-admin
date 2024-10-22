@@ -7,6 +7,7 @@ import DoctorBasicInformationTab from "./components/doctor-basic-information-tab
 import DoctorReservationChartTab from "./components/doctor-reservation-chart-tab";
 import { Container } from "./components/styles";
 import DoctorsDaysOffTab from "./components/doctors-days-off-tab";
+import { useTranslations } from "next-intl";
 
 interface Props {
   params: { doctorId: number };
@@ -15,6 +16,7 @@ interface Props {
 const Orders = () => <p>Orders</p>;
 
 const DoctorDetailPage: FC<Props> = ({ params }) => {
+  const t = useTranslations("doctor-detail-page");
   const { data: userDetailInfo, isLoading: isUserDetailLoading } =
     useGetUserById(params.doctorId);
 
@@ -36,22 +38,22 @@ const DoctorDetailPage: FC<Props> = ({ params }) => {
           items={[
             {
               key: "1",
-              label: "اطلاعات پایه",
+              label: t("tabs.basic-information"),
               children: <DoctorBasicInformationTab doctor={userDetailInfo} />,
             },
             {
               key: "2",
-              label: "چارت رزرو",
+              label: t("tabs.reservation-chart"),
               children: <DoctorReservationChartTab doctor={userDetailInfo} />,
             },
             {
               key: "3",
-              label: "درخواست مرخصی",
+              label: t("daysoff"),
               children: <DoctorsDaysOffTab doctor={userDetailInfo} />,
             },
             {
               key: "4",
-              label: "جلسات رزرو شده",
+              label: t("reserved-orders"),
               children: <Orders />,
             },
           ]}

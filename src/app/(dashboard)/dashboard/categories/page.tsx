@@ -15,9 +15,12 @@ import { AnyObject } from "antd/es/_util/type";
 import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import { useDeleteCategory } from "@/services/category/delete-category";
 import { useNotificationStore } from "@/store/notification.store";
+import { useTranslations } from "next-intl";
 
 const CategoriesPage: FC = () => {
   const { mutateAsync: deleteCategoryMutate } = useDeleteCategory();
+  const t = useTranslations("categories-page");
+  const tGlobal = useTranslations("globals");
 
   const [apiQuery, setApiQuery] = useState<GetCategoriesQuery>({
     limit: 10,
@@ -77,7 +80,7 @@ const CategoriesPage: FC = () => {
     if (selectedCategoryToDelete?.id) {
       deleteCategoryMutate(selectedCategoryToDelete?.id)
         .then(() => {
-          showNotification("حذف زمینه تخصصی با موفقیت انجام گردید", "success");
+          showNotification(t("delete-successfully"), "success");
           handleCloseDeleteConfirmation();
           refetchCategories();
         })
@@ -91,7 +94,7 @@ const CategoriesPage: FC = () => {
 
   const columns = [
     {
-      title: "آیکن",
+      title: t("category-icon"),
       dataIndex: "icon",
       render: (iconURL: string) => {
         return (
@@ -107,12 +110,12 @@ const CategoriesPage: FC = () => {
       },
     },
     {
-      title: "نام زمینه تخصصی",
+      title: t("category-name"),
       dataIndex: "name",
     },
     ...TABLE_DEFAULT_COLUMNS,
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       width: 200,
       render: (_: unknown, record: AnyObject) => {
         return (
@@ -125,7 +128,7 @@ const CategoriesPage: FC = () => {
               size="small"
               type="link"
             >
-              ویرایش
+              {tGlobal("edit")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -136,7 +139,7 @@ const CategoriesPage: FC = () => {
               size="small"
               type="link"
             >
-              حذف
+              {tGlobal("delete")}
             </Button>
           </Flex>
         );
@@ -148,11 +151,12 @@ const CategoriesPage: FC = () => {
     <Flex style={{ height: "100%" }} vertical gap="24px">
       <DeleteConfirmation
         open={!!selectedCategoryToDelete}
-        title="حذف زمینه تخصصی"
+        title={t("delete-confirmation-title")}
         renderBody={() => (
           <>
-            آیا از حذف زمینه تخصصی {selectedCategoryToDelete?.name} اطمینان
-            دارید؟
+            {t("delete-confirmation-text", {
+              name: selectedCategoryToDelete?.name,
+            })}
           </>
         )}
         onClose={handleCloseDeleteConfirmation}
@@ -167,16 +171,16 @@ const CategoriesPage: FC = () => {
 
       <EmptyWrapper
         isEmpty={categoriesData?.count === 0}
-        title="لیست زمینه های تخصصی"
-        description="آیتمی وجود ندارد, از طریق دکمه افزودن زمینه تخصصی جدید, یک آیتم جدید ایجاد کنید"
+        title={t("empty-wrapper-title")}
+        description={t("empty-wrapper-description")}
         btn={{
           click: handleOpenAddCategoryDialog,
-          text: "افزودن زمینه تخصصی جدید",
+          text: t("add-new-title"),
         }}
       >
         <TableHeader
-          createText="افزودن زمینه تخصصی جدید"
-          headTitle="لیست زمینه های تخصصی ارائه شده"
+          createText={t("add-new-title")}
+          headTitle={t("title")}
           onCreate={handleOpenAddCategoryDialog}
         />
         <Card

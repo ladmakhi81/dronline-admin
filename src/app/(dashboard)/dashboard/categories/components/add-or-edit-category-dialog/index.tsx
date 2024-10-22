@@ -10,6 +10,7 @@ import { useAuthStore } from "@/store/auth.store";
 import { useCreateCategory } from "@/services/category/create-category";
 import { useNotificationStore } from "@/store/notification.store";
 import { useEditCategory } from "@/services/category/edit-category";
+import { useTranslations } from "next-intl";
 
 interface FieldsType {
   name: string;
@@ -29,6 +30,7 @@ const AddOrEditCategoryDialog: FC<Props> = ({
   selectedCategory,
   refetchCategories,
 }) => {
+  const t = useTranslations("categories-page.modify-category-modal");
   const { mutateAsync: editCategoryMutate } = useEditCategory();
   const { mutateAsync: createCategoryMutate } = useCreateCategory();
   const [form] = Form.useForm();
@@ -63,10 +65,7 @@ const AddOrEditCategoryDialog: FC<Props> = ({
         id: selectedCategory.id,
       })
         .then(() => {
-          showNotification(
-            "ویرایش زمینه تخصصی با موفقیت انجام گردید",
-            "success"
-          );
+          showNotification(t("edit-successfully"), "success");
           refetchCategories();
           handleClose();
         })
@@ -77,7 +76,7 @@ const AddOrEditCategoryDialog: FC<Props> = ({
         name: formData.name,
       })
         .then(() => {
-          showNotification("زمینه تخصصی با موفقیت ایجاد گردید", "success");
+          showNotification(t("create-successfully"), "success");
           refetchCategories();
           handleClose();
         })
@@ -85,9 +84,7 @@ const AddOrEditCategoryDialog: FC<Props> = ({
     }
   };
 
-  const title = selectedCategory
-    ? "ویرایش زمینه تخصصی"
-    : "ساخت زمینه تخصصی جدید";
+  const title = selectedCategory ? t("edit-title") : t("create-title");
 
   const isSelectIcon = !!fieldsWatch?.icon;
 
@@ -115,7 +112,7 @@ const AddOrEditCategoryDialog: FC<Props> = ({
         <Form.Item
           rules={CREATE_EDIT_CATEGORY_VALIDATION_RULES.name}
           name="name"
-          label="نام زمینه تخصصی"
+          label={t("name")}
         >
           <Input size="large" />
         </Form.Item>
@@ -142,7 +139,7 @@ const AddOrEditCategoryDialog: FC<Props> = ({
                 type="dashed"
                 className="upload-button"
               >
-                افزودن آیکن مربوط به دسته بندی
+                {t("add-icon")}
               </Button>
             </Upload>
           </Form.Item>

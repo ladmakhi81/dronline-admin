@@ -7,6 +7,7 @@ import { jalaliDateFormater } from "@/utils/date-format";
 import { WEEK_DAY } from "@/constant/weekday.constant";
 import { ScheduleType } from "@/services/schedule/types";
 import UserDetailInfoCard from "../user-detail-info-card";
+import { useTranslations } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const OrderDetailDialog: FC<Props> = ({ onClose, open, order }) => {
+  const t = useTranslations("common.order-detail-modal");
   const handleClose = () => {
     onClose();
   };
@@ -30,33 +32,34 @@ const OrderDetailDialog: FC<Props> = ({ onClose, open, order }) => {
     >
       <Flex vertical gap="20px">
         <UserDetailInfoCard
-          title="اطلاعات مربوط به مراجعه کننده"
+          title={t("patient-info-title")}
           user={order.patient}
         />
-        <UserDetailInfoCard title="اطلاعات مربوط به پزشک" user={order.doctor} />
-        <Descriptions title="اطلاعات مربوط به رزرو" bordered layout="vertical">
-          <Descriptions.Item label="شماره سریال نوبت رزرو">
+        <UserDetailInfoCard
+          title={t("doctor-info-title")}
+          user={order.doctor}
+        />
+        <Descriptions title={t("order-info-title")} bordered layout="vertical">
+          <Descriptions.Item label={t("order-id")}>
             {order.id}
           </Descriptions.Item>
-          <Descriptions.Item label="تاریخ رزرو">
+          <Descriptions.Item label={t("order-date")}>
             <span dir="ltr">{jalaliDateFormater(new Date(order.date))}</span>
           </Descriptions.Item>
-          <Descriptions.Item label="روز برگزاری">
+          <Descriptions.Item label={t("day")}>
             {WEEK_DAY.get(order.day)}
           </Descriptions.Item>
-          <Descriptions.Item label="بازه زمانی رزرو">
+          <Descriptions.Item label={t("period")}>
             {order.startHour} _ {order.endHour}
           </Descriptions.Item>
-          <Descriptions.Item label="وضعیت نوبت">
+          <Descriptions.Item label={t("status")}>
             {order.status}
           </Descriptions.Item>
-          <Descriptions.Item label="نحوه برگزاری">
-            {order.type}
-          </Descriptions.Item>
+          <Descriptions.Item label={t("type")}>{order.type}</Descriptions.Item>
           {order.type !== ScheduleType.online && (
             <>
-              <Descriptions.Item label="محل برگزاری">
-                {order.city} - {order.address} - اتاق {order.room}
+              <Descriptions.Item label={t("location")}>
+                {order.city} - {order.address} - {t("room")} {order.room}
               </Descriptions.Item>
             </>
           )}

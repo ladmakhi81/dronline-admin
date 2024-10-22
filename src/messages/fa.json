@@ -1,0 +1,323 @@
+{
+  "globals": {
+    "delete": "حذف",
+    "edit": "ویرایش",
+    "operation": "عملیات",
+    "detail": "جزئیات",
+    "toman": "تومان",
+    "diploma": "دیپلم",
+    "associate": "فوق دیپلم",
+    "bachelor": "لیسانس",
+    "master": "فوق لیسانس",
+    "doctorate": "دکترا",
+    "male": "مرد",
+    "female": "زن",
+    "unknown": "نامشخص",
+    "both": "حضوری و آنلاین",
+    "online": "آنلاین",
+    "onsite": "آنلاین"
+  },
+  "common": {
+    "order-detail-modal": {
+      "patient-info-title": "اطلاعات مربوط به مراجعه کننده",
+      "doctor-info-title": "اطلاعات مربوط به پزشک",
+      "order-info-title": "اطلاعات مربوط به رزرو",
+      "order-id": "شماره سریال نوبت رزرو",
+      "order-date": "تاریخ رزرو",
+      "day": "روز برگزاری",
+      "period": "بازه زمانی رزرو",
+      "status": "وضعیت نوبت",
+      "type": "نحوه برگزاری",
+      "location": "محل برگزاری",
+      "room": "اتاق"
+    },
+    "transaction-detail-modal": {
+      "info-patient": "اطلاعات مربوط به پرداخت کننده",
+      "info-doctor": "اطلاعات مربوط به دریافت کننده",
+      "info-transaction": "اطلاعات مربوط به تراکنش",
+      "order-id": "سریال رزرو",
+      "transaction-id": "سریال تراکنش",
+      "status": "وضعیت تراکنش",
+      "payed": "پرداخت شده",
+      "not-payed": "پرداخت نشده",
+      "price": "مبلغ",
+      "pay-link": "لینک پرداخت",
+      "payed-date": "تاریخ پرداخت",
+      "ref-id": "شماره پیگیری"
+    },
+    "edit-password-modal": {
+      "edit-successfully": "پسورد کاربر مورد نظر با موفقیت ویرایش گردید",
+      "title": "تغییر گذرواژه {user}",
+      "password": "گذرواژه جدید"
+    }
+  },
+  "categories-page": {
+    "title": "لیست زمینه های تخصصی ارائه شده",
+    "add-new-title": "افزودن زمینه تخصصی جدید",
+    "empty-wrapper-title": "لیست زمینه های تخصصی",
+    "empty-wrapper-description": "آیتمی وجود ندارد, از طریق دکمه افزودن زمینه تخصصی جدید, یک آیتم جدید ایجاد کنید",
+    "delete-confirmation-text": "آیا از حذف زمینه تخصصی {name} اطمینان دارید؟",
+    "delete-confirmation-title": "حذف زمینه تخصصی",
+    "category-name": "نام زمینه تخصصی",
+    "category-icon": "آیکن",
+    "delete-successfully": "حذف زمینه تخصصی با موفقیت انجام گردید",
+    "modify-category-modal": {
+      "edit-successfully": "ویرایش زمینه تخصصی با موفقیت انجام گردید",
+      "create-successfully": "زمینه تخصصی با موفقیت ایجاد گردید",
+      "edit-title": "ویرایش زمینه تخصصی",
+      "create-title": "ساخت زمینه تخصصی جدید",
+      "name": "نام زمینه تخصصی",
+      "add-icon": "افزودن آیکن مربوط به دسته بندی"
+    }
+  },
+  "locations-page": {
+    "delete-successfully": "حذف لوکیشن با موفقیت انجام گردید",
+    "city": "شهر",
+    "address": "آدرس",
+    "doctor-schedules-count": "تعداد شیفت های موجود",
+    "delete-confirmation-text": "آیا از حذف شهر {city} و آدرس {address} اطمینان دارید؟",
+    "delete-confirmation-title": "حذف لوکیشن",
+    "empty-wrapper-title": "لوکیشن سرویس دهنده",
+    "empty-wrapper-description": "ابتدا باید لوکیشن سرویس دهنده ای ایجاد کنید",
+    "create-title": "ساخت لوکیشن",
+    "title": "لیست لوکیشن های سرویس دهنده",
+    "modify-location-modal": {
+      "create-title": "ساخت لوکیشن سرویس دهنده",
+      "edit-title": "ویرایش لوکیشن سرویس دهنده",
+      "edit-successfully": "ویرایش لوکیشن سرویس دهنده با موفقیت انجام گردید",
+      "create-successfully": "ساخت لوکیشن سرویس دهنده با موفقیت انجام گردید",
+      "city": "شهر",
+      "address": "آدرس سرویس دهنده"
+    }
+  },
+  "orders-page": {
+    "title": "لیست نوبت های رزرو شده",
+    "empty-wrapper-title": "لیست نوبت های رزرو شده",
+    "empty-wrapper-description": "نوبت رزرو شده ای یافت نشد, برای ثبت رزرو نوبت از دکمه زیر استفاده کنید",
+    "add-new-btn": "ثبت نوبت جدید",
+    "delete-confirmation-text": "آیا از حذف نوبت رزرو برای {user} با سریال {id} اطمینان دارید؟",
+    "delete-confirmation-title": "حذف رزرو نوبت",
+    "id": "سریال نوبت",
+    "patient": "مراجعه کننده",
+    "doctor": "پزشک",
+    "date": "تاریخ نوبت",
+    "time": "زمان نوبت",
+    "day": "روز هفته",
+    "status": "وضعیت رزرو",
+    "type": "نحوه برگزاری",
+    "transaction": "تراکنش",
+    "cancel": "کنسل کردن",
+    "submit-order-modal": {
+      "submit-successfully": "رزرو با موفقیت ثبت شد",
+      "title": "ثبت رزرو جدید",
+      "submit-by-date": "رزرو براساس تاریخ",
+      "submit-by-doctor": "رزرو براساس پزشک",
+      "submit-by-date-modal": {
+        "patient": "بیمار یا مراجعه کننده",
+        "patient-placeholder": "بیمار یا مراجعه کننده را انتخاب کنید",
+        "day": "روز هفته برای ثبت رزرو",
+        "day-placeholder": "روز هفته",
+        "schedule": "نوبت های باز برای رزرو",
+        "schedule-placeholder": "نوبت مورد نیاز با توجه به زمان و روز هفته انتخاب کنید",
+        "type": "نحوه برگزاری جلسه",
+        "type-placeholder": "جلسه به صورت حضوری یا آنلاین برگزار شود",
+        "date": "تاریخ ثبت رزرو"
+      },
+      "submit-by-doctor-modal": {
+        "patient": "بیمار یا مراجعه کننده",
+        "patient-placeholder": "بیمار یا مراجعه کننده را انتخاب کنید",
+        "doctor": "پزشک",
+        "doctor-placeholder": "پزشک مورد نظر را انتخاب کنید",
+        "type": "نحوه برگزاری جلسه",
+        "type-placeholder": "جلسه به صورت حضوری یا آنلاین برگزار شود",
+        "schedule": "نوبت های باز برای رزرو",
+        "schedule-type": "نوبت باز برای رزرو را انتخاب کنید",
+        "date": "تاریخ ثبت رزرو"
+      }
+    }
+  },
+  "transactions-page": {
+    "copy-link-successfully": "لینک پرداخت کپی شد",
+    "id": "سریال تراکنش",
+    "customer": "مشتری",
+    "doctor": "پزشک",
+    "amount": "مبلغ پرداخت شده",
+    "status": "وضعیت تراکنش",
+    "copy-link": "کپی کردن لینک پرداخت",
+    "order-detail-text": "نمایش فاکتور",
+    "empty-wrapper-title": "لیست تراکنش ها",
+    "empty-wrapper-description": "در این صفحه میتوانید لیست تراکنش های ایجاد شده را مشاهده کنید . در حال حاضر تراکنشی ایجاد نشده است",
+    "title": "لیست تراکنش ها"
+  },
+  "users": {
+    "patients-page": {
+      "delete-successfully": "حذف بیمار مورد نظر با موفقیت انجام گردید",
+      "id": "شماره پرونده",
+      "fullName": "نام و نام خانوادگی بیمار",
+      "phone": "شماره تماس بیمار",
+      "orders-count": "تعداد رزروهای ثبت شده",
+      "edit-password": "تغییر گذرواژه",
+      "delete-confirmation-title": "حذف بیمار",
+      "delete-confirmation-description": "آیا از حذف بیمار {user} با شماره تماس {phone} اطمینان دارید ؟",
+      "empty-wrapper-title": "لیست بیماران",
+      "empty-wrapper-description": "بیماری ایجاد نشده است, برای ساخت بیمار روی افزودن بیمار کلیک کنید",
+      "add-patient-btn": "افزودن بیمار جدید",
+      "title": "لیست بیماران",
+      "modify-patient-dialog": {
+        "edit-patient-successfully": "بیمار مورد نظر با موفقیت ویرایش گردید",
+        "create-patient-successfully": "بیمار مورد نظر با موفقیت ایجاد گردید",
+        "create-title": "افزودن بیمار جدید",
+        "edit-title": "ویرایش بیمار",
+        "firstName": "نام بیمار",
+        "lastName": "نام خانوادگی بیمار",
+        "phone": "شماره تماس بیمار"
+      }
+    },
+    "admins-page": {
+      "edit-status-successfully": "وضعیت حساب کاربری با موفقیت ثبت شد",
+      "delete-successfully": "حذف ادمین با موفقیت انجام شد",
+      "row": "ردیف",
+      "fullName": "نام و نام خانوادگی",
+      "phone": "شماره تماس",
+      "isActive": "وضعیت حساب کاربری",
+      "change-password-text": "تغییر گذرواژه",
+      "empty-wrapper-title": "لیست ادمین ها",
+      "empty-wrapper-description": "ادمینی ایجاد نشده است, برای ساخت ادمین روی افزودن ادمین کلیک کنید",
+      "add-new-admin-btn": "افزودن ادمین جدید",
+      "delete-confirmation-title": "حذف ادمین",
+      "delete-confirmation-description": "آیا از حذف ادمین {user} با شماره سریال {id} اطمینان دارید؟",
+      "title": "لیست ادمین ها",
+      "modify-admin-dialog": {
+        "edit-successfully": "ویرایش ادمین با موفقیت انجام شد",
+        "create-successfully": "ساخت ادمین با موفقیت انجام شد",
+        "create-title": "ساخت حساب ادمین",
+        "edit-title": "ویرایش حساب ادمین",
+        "firstName": "نام",
+        "lastName": "نام خانوادگی",
+        "phone": "شماره تماس",
+        "password": "گذرواژه",
+        "is-active-account": "حساب کاربری فعال باشد"
+      }
+    },
+    "doctors-page": {
+      "delete-doctor-successfully": "حذف پزشک با موفقیت انجام شد",
+      "edit-doctor-successfully": "ویرایش پزشک با موفقیت انجام شد",
+      "create-doctor-successfully": "ساخت پزشک با موفقیت انجام شد",
+      "upload-profile-image-successfully": "پروفایل پزشک با موفقیت آپلود و ذخیره شد",
+      "id": "سریال پزشک",
+      "fullName": "نام و نام خانوادگی",
+      "phone-1": "شماره تماس 1",
+      "phone-2": "شماره تماس 2",
+      "edit-password-text": "ویرایش گذرواژه",
+      "edit-account-text": "ویرایش حساب کاربری",
+      "upload-profile-text": "آپلود تصویر پروفایل",
+      "delete-confirmation-title": "حذف پزشک",
+      "delete-confirmation-description": "آیا از حذف پزشک {user} با شماره پرونده {id} اطمینان دارید؟",
+      "empty-wrapper-title": "لیست پزشکان",
+      "empty-wrapper-description": "پزشکی ایجاد نشده,برای ساخت پزشک روی افزودن پزشک جدید کلیک کنید",
+      "add-doctor-btn": "افزودن پزشک جدید",
+      "title": "لیست پزشکان سایت",
+      "modify-doctor-modal": {
+        "edit-title": "ویرایش پروفایل پزشک",
+        "create-title": "ساخت پزشک جدید",
+        "firstName": "نام پزشک",
+        "lastName": "نام خانوادگی پزشک",
+        "phone": "شماره تماس پزشک",
+        "phone-1-placeholder": "شماره تماس پزشک 1",
+        "phone-2-placeholder": "شماره تماس پزشک 2",
+        "degree-of-education": "مدرک تحصیلی پزشک",
+        "degree-of-education-placeholder": "دیپلم یا فوق دیپلم یا ...",
+        "gender": "جنسیت",
+        "working-fields": "زمینه های تخصصی",
+        "working-fields-placeholder": "زمینه های تخصصی که پزشک دارد",
+        "address": "آدرس",
+        "address-placeholder": "آدرس مطب پزشک",
+        "bio": "بیوگرافی",
+        "bio-placeholder": "خلاصه ای از پزشک و نحوه درمانش"
+      }
+    },
+    "doctor-detail-page": {
+      "tabs": {
+        "basic-information": "اطلاعات پایه",
+        "reservation-chart": "چارت رزرو",
+        "daysoff": "درخواست مرخصی",
+        "reserved-orders": "جلسات رزرو شده"
+      },
+      "basic-information-tab": {
+        "profile-image": "تصویر پروفایل کاربر",
+        "fullName": "نام و نام خانوادگی",
+        "phone": "شماره تماس",
+        "degree-of-education": "مدرک تحصیلی",
+        "id": "شماره پرونده پزشک",
+        "status": "وضعیت پزشک",
+        "active": "فعال",
+        "disable": "غیرفعال",
+        "address": "آدرس",
+        "bio": "بیوگرافی",
+        "working-fields": "زمینه های تخصصی",
+        "created-at": "تاریخ تشکیل پرونده"
+      },
+      "reservation-chart-tab": {
+        "delete-successfully": "حذف چارت رزرو با موفقیت انجام شد",
+        "row": "ردیف",
+        "day": "روز هفته",
+        "period": "بازه زمانی",
+        "type": "نوع برگزاری",
+        "city": "شهر",
+        "address": "آدرس",
+        "room": "شماره اتاق",
+        "delete-confirmation-description": "آیا از حذف چارت رزرو در روز {day} ساعت {hour} اطمینان دارید؟",
+        "delete-confirmation-title": "حذف چارت رزرو",
+        "empty-wrapper-title": "چارت رزرو",
+        "empty-wrapper-description": "آیتمی در چارت رزرو وجود ندارد, برای ساخت آیتم جدید از دکمه زیر استفاده کنید",
+        "add-new-schedule": "افزودن رزرو جدید",
+        "add-new-schedule-modal": {
+          "added-successfully": "اطلاعات جدید رزرو ثبت شد",
+          "title": "افزودن آیتم جدید به چارت رزرو",
+          "day": "روز هفته",
+          "day-placeholder": "انتخاب روز هفته",
+          "type": "نوع برگزاری جلسه",
+          "type-placeholder": "حضوری یا آنلاین",
+          "location": "محل برگزاری",
+          "location-placeholder": "انتخاب محل برگزاری",
+          "room": "اتاق",
+          "room-placeholder": "اتاق مربوط به برگزاری جلسه",
+          "start-hour": "زمان شروع جلسه",
+          "end-hour": "زمان پایان جلسه"
+        }
+      },
+      "daysoff-tab": {
+        "delete-successfully": "حذف درخواست مرخصی با موفقیت انجام گردید",
+        "row": "ردیف",
+        "date": "تاریخ مرخصی",
+        "hour": "ساعت مرخصی",
+        "created-at": "تاریخ ثبت درخواست",
+        "delete-confirmation-description": "آیا از حذف درخواست مرخصی در تاریخ {date} برای ساعت {hour} اطمینان دارید؟",
+        "delete-confirmation-title": "حذف درخواست مرخصی",
+        "empty-wrapper-title": "درخواست مرخصی",
+        "empty-wrapper-description": "درخواست مرخصی موجود نیست, برای ایجاد درخواست مرخصی باید روی دکمه زیر کلیک کنید",
+        "add-new-daysoff": "درخواست مرخصی جدید",
+        "add-daysoff-modal": {
+          "add-successfully": "درخواست مرخصی با موفقیت ثبت شد",
+          "title": "ثبت درخواست مرخصی",
+          "schedule-item": "گزینه رزرو برای مرخصی",
+          "date": "تاریخ درخواست مرخصی"
+        }
+      }
+    }
+  },
+  "login-page": {
+    "login-successfully": "ورود شما با موفقیت انجام گردید",
+    "title": "به پنل مدیریتی دکتر آنلاین خوش آمدید",
+    "phone": "شماره تماس",
+    "phone-placeholder": "شماره تماس خود را وارد کنید",
+    "password": "گذرواژه",
+    "password-placeholder": "گذرواژه خود را وارد کنید",
+    "login-btn": "ورود به پنل مدیریت"
+  },
+  "not-found-page": {
+    "title": "404",
+    "description": "صفحه مورد نظر یافت نشد",
+    "btn-link": "بازگشت به صفحه اصلی"
+  }
+}

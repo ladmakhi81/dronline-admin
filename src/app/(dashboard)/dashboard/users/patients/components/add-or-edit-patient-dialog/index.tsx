@@ -13,6 +13,7 @@ import { CREATE_OR_EDIT_PATIENT_VALIDATION_RULES } from "./validation-rules";
 import { useCreateUser } from "@/services/user/create-user";
 import { useNotificationStore } from "@/store/notification.store";
 import { useEditUser } from "@/services/user/edit-user";
+import { useTranslations } from "next-intl";
 
 interface Props {
   selectedUser?: User;
@@ -33,6 +34,7 @@ const AddOrEditPatientDialog: FC<Props> = ({
   refetchUsers,
   selectedUser,
 }) => {
+  const t = useTranslations("users.patients-page.modify-patient-dialog");
   const showNotification = useNotificationStore(
     (state) => state.addNotification
   );
@@ -42,9 +44,11 @@ const AddOrEditPatientDialog: FC<Props> = ({
 
   useEffect(() => {
     if (selectedUser) {
-      form.setFieldValue("firstName", selectedUser.firstName);
-      form.setFieldValue("lastName", selectedUser.lastName);
-      form.setFieldValue("phone", selectedUser.phone);
+      form.setFieldsValue({
+        firstName: selectedUser.firstName,
+        lastName: selectedUser.lastName,
+        phone: selectedUser.phone,
+      });
     }
   }, [form, selectedUser]);
 
@@ -71,7 +75,7 @@ const AddOrEditPatientDialog: FC<Props> = ({
       }).then(() => {
         refetchUsers();
         handleClose();
-        showNotification("بیمار مورد نظر با موفقیت ویرایش گردید", "success");
+        showNotification(t("edit-patient-successfully"), "success");
       });
     } else {
       const payload: CreatePatientReqBody = {
@@ -84,13 +88,13 @@ const AddOrEditPatientDialog: FC<Props> = ({
         .then(() => {
           refetchUsers();
           handleClose();
-          showNotification("بیمار مورد نظر با موفقیت ایجاد گردید", "success");
+          showNotification(t("create-patient-successfully"), "success");
         })
         .catch(() => {});
     }
   };
 
-  const title = selectedUser ? "ویرایش بیمار" : "افزودن بیمار جدید";
+  const title = selectedUser ? t("edit-title") : t("create-title");
 
   const initialValue: FieldsType = {
     firstName: "",
@@ -117,21 +121,21 @@ const AddOrEditPatientDialog: FC<Props> = ({
         <Form.Item
           rules={CREATE_OR_EDIT_PATIENT_VALIDATION_RULES.firstName}
           name="firstName"
-          label="نام بیمار"
+          label={t("firstName")}
         >
           <Input size="large" />
         </Form.Item>
         <Form.Item
           rules={CREATE_OR_EDIT_PATIENT_VALIDATION_RULES.lastName}
           name="lastName"
-          label="نام خانوادگی بیمار"
+          label={t("lastName")}
         >
           <Input size="large" />
         </Form.Item>
         <Form.Item
           rules={CREATE_OR_EDIT_PATIENT_VALIDATION_RULES.phone}
           name="phone"
-          label="شماره تماس بیمار"
+          label={t("phone")}
         >
           <Input size="large" />
         </Form.Item>

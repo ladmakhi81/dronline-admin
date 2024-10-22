@@ -25,8 +25,12 @@ import { useNotificationStore } from "@/store/notification.store";
 import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import { useDeleteUser } from "@/services/user/delete-user";
 import { useUploadUserImage } from "@/services/user/upload-image";
+import { useTranslations } from "next-intl";
 
 const DoctorsPage: FC = () => {
+  const t = useTranslations("users.admins-page");
+  const tGlobal = useTranslations("globals");
+
   const [queryApi, setQueryApi] = useState<GetUsersQuery>({
     type: UserType.Doctor,
     limit: 10,
@@ -75,7 +79,7 @@ const DoctorsPage: FC = () => {
     if (selectedDoctorToDelete) {
       deleteDoctorMutate(selectedDoctorToDelete.id)
         .then(() => {
-          showNotification("حذف پزشک با موفقیت انجام شد", "success");
+          showNotification(t("delete-doctor-successfully"), "success");
           handleCloseDeleteDoctorConfirmation();
           refetchDoctors();
         })
@@ -117,7 +121,7 @@ const DoctorsPage: FC = () => {
         .then(() => {
           refetchDoctors();
           handleCloseCreateOrEditDoctorDialog();
-          showNotification("ویرایش پزشک با موفقیت انجام شد", "success");
+          showNotification(t("edit-doctor-successfully"), "success");
         })
         .catch(() => {});
     } else {
@@ -128,7 +132,7 @@ const DoctorsPage: FC = () => {
         .then(() => {
           refetchDoctors();
           handleCloseCreateOrEditDoctorDialog();
-          showNotification("ساخت پزشک با موفقیت انجام شد", "success");
+          showNotification(t("create-doctor-successfully"), "success");
         })
         .catch(() => {});
     }
@@ -162,10 +166,7 @@ const DoctorsPage: FC = () => {
         })
         .then(() => {
           refetchDoctors();
-          showNotification(
-            "پروفایل پزشک با موفقیت آپلود و ذخیره شد",
-            "success"
-          );
+          showNotification(t("upload-profile-image-successfully"), "success");
         })
         .catch(() => {});
     }
@@ -177,11 +178,11 @@ const DoctorsPage: FC = () => {
 
   const columns = [
     {
-      title: "سریال پزشک",
+      title: t("id"),
       dataIndex: "id",
     },
     {
-      title: "نام و نام خانوادگی",
+      title: t("fullName"),
       dataIndex: "fullName",
       render: (_: unknown, record: AnyObject) => {
         const user = record as User;
@@ -193,16 +194,16 @@ const DoctorsPage: FC = () => {
       },
     },
     {
-      title: "شماره تماس 1",
+      title: t("phone-1"),
       dataIndex: "phone",
     },
     {
-      title: "شماره تماس 2",
+      title: t("phone-2"),
       dataIndex: "phone2",
     },
     ...TABLE_DEFAULT_COLUMNS,
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       width: 200,
       render: (_: unknown, record: AnyObject) => {
         const doctor = record as User;
@@ -213,7 +214,7 @@ const DoctorsPage: FC = () => {
               size="small"
               type="link"
             >
-              جزئیات
+              {tGlobal("detail")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -221,7 +222,7 @@ const DoctorsPage: FC = () => {
               size="small"
               type="link"
             >
-              ویرایش گذرواژه
+              {t("edit-password-text")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -229,7 +230,7 @@ const DoctorsPage: FC = () => {
               size="small"
               type="link"
             >
-              ویرایش حساب کاربری
+              {t("edit-account-text")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button size="small" type="link" style={{ position: "relative" }}>
@@ -247,7 +248,7 @@ const DoctorsPage: FC = () => {
                 accept="image/*"
                 onChange={handleChangeProfile.bind(null, doctor.id)}
               />
-              آپلود تصویر پروفایل
+              {t("upload-profile-text")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -255,7 +256,7 @@ const DoctorsPage: FC = () => {
               size="small"
               type="link"
             >
-              حذف
+              {tGlobal("delete")}
             </Button>
           </Flex>
         );
@@ -277,12 +278,16 @@ const DoctorsPage: FC = () => {
         selectedDoctor={selectedDoctorToEdit}
       />
       <DeleteConfirmation
-        title="حذف پزشک"
+        title={t("delete-confirmation-title")}
         renderBody={() => (
           <>
-            آیا از حذف پزشک {selectedDoctorToDelete?.firstName}{" "}
-            {selectedDoctorToDelete?.lastName} با شماره پرونده{" "}
-            {selectedDoctorToDelete?.id} اطمینان دارید؟
+            {t("delete-confirmation-description", {
+              user:
+                selectedDoctorToDelete?.firstName +
+                " " +
+                selectedDoctorToDelete?.lastName,
+              id: selectedDoctorToDelete?.id,
+            })}
           </>
         )}
         onClose={handleCloseDeleteDoctorConfirmation}
@@ -292,16 +297,16 @@ const DoctorsPage: FC = () => {
 
       <EmptyWrapper
         isEmpty={doctorsData?.count === 0}
-        title="لیست پزشکان"
-        description="پزشکی ایجاد نشده,برای ساخت پزشک روی افزودن پزشک جدید کلیک کنید "
+        title={t("empty-wrapper-title")}
+        description={t("empty-wrapper-description")}
         btn={{
-          text: "افزودن پزشک جدید",
+          text: t("add-doctor-btn"),
           click: handleOpenCreateDoctorDialog,
         }}
       >
         <TableHeader
-          headTitle="لیست پزشکان سایت"
-          createText="افزودن پزشک جدید"
+          headTitle={t("title")}
+          createText={t("add-doctor-btn")}
           onCreate={handleOpenCreateDoctorDialog}
         />
         <Card

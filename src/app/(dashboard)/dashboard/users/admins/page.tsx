@@ -15,8 +15,12 @@ import { useDeleteUser } from "@/services/user/delete-user";
 import { useNotificationStore } from "@/store/notification.store";
 import { useEditUser } from "@/services/user/edit-user";
 import CreateOrEditAdminDialog from "./components/create-or-edit-admin-dialog";
+import { useTranslations } from "next-intl";
 
 const AdminsPage: FC = () => {
+  const t = useTranslations("users.admins-page");
+  const tGlobal = useTranslations("globals");
+
   const [queryApi, setQueryApi] = useState<GetUsersQuery>({
     type: UserType.Admin,
     limit: 10,
@@ -69,7 +73,7 @@ const AdminsPage: FC = () => {
     editUserMutate({ type: UserType.Admin, isActive, id: admin.id })
       .then(() => {
         refetchAdmins();
-        showNotification("وضعیت حساب کاربری با موفقیت ثبت شد", "success");
+        showNotification(t("edit-status-successfully"), "success");
       })
       .catch(() => {});
   };
@@ -78,7 +82,7 @@ const AdminsPage: FC = () => {
     if (selectedAdminToDelete?.id) {
       deleteAdminMutate(selectedAdminToDelete.id)
         .then(() => {
-          showNotification("حذف ادمین با موفقیت انجام شد", "success");
+          showNotification(t("delete-successfully"), "success");
           handleCloseDeleteAdminConfirmation();
           refetchAdmins();
         })
@@ -108,10 +112,10 @@ const AdminsPage: FC = () => {
   }, [adminsData?.content]);
 
   const columns = [
-    { dataIndex: "index", title: "ردیف" },
+    { dataIndex: "index", title: t("row") },
     {
       dataIndex: "fullName",
-      title: "نام و نام خانوادگی",
+      title: t("fullName"),
       render: (_: unknown, record: AnyObject) => {
         const admin = record as User;
         return admin.firstName + " " + admin.lastName;
@@ -119,11 +123,11 @@ const AdminsPage: FC = () => {
     },
     {
       dataIndex: "phone",
-      title: "شماره تماس",
+      title: t("phone"),
     },
     {
       dataIndex: "isActive",
-      title: "وضعیت حساب کاربری",
+      title: t("isActive"),
       render: (isActive: boolean, record: AnyObject) => (
         <Switch
           onChange={handleEditUserActiveStatus.bind(
@@ -138,7 +142,7 @@ const AdminsPage: FC = () => {
     },
     ...TABLE_DEFAULT_COLUMNS,
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       width: 200,
       render: (_: unknown, doctor: AnyObject) => {
         const admin = doctor as User;
@@ -150,7 +154,7 @@ const AdminsPage: FC = () => {
               size="small"
               type="link"
             >
-              ویرایش
+              {tGlobal("edit")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -158,7 +162,7 @@ const AdminsPage: FC = () => {
               size="small"
               type="link"
             >
-              حذف
+              {tGlobal("delete")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -166,7 +170,7 @@ const AdminsPage: FC = () => {
               size="small"
               type="link"
             >
-              تغییر گذرواژه
+              {t("change-password-text")}
             </Button>
           </Flex>
         );
@@ -178,11 +182,11 @@ const AdminsPage: FC = () => {
     <Flex style={{ height: "100%" }} vertical gap="24px">
       <EmptyWrapper
         isEmpty={adminsData?.count === 0}
-        title="لیست ادمین ها"
-        description="ادمینی ایجاد نشده است, برای ساخت ادمین روی افزودن ادمین کلیک کنید"
+        title={t("empty-wrapper-title")}
+        description={t("empty-wrapper-description")}
         btn={{
           click: handleOpenCreateAdminDialog,
-          text: "افزودن ادمین جدید",
+          text: t("add-new-admin-btn"),
         }}
       >
         <CreateOrEditAdminDialog
@@ -199,19 +203,23 @@ const AdminsPage: FC = () => {
         <DeleteConfirmation
           onClose={handleCloseDeleteAdminConfirmation}
           onConfirm={handleConfirmDeleteAdmin}
-          title="حذف ادمین"
+          title={t("delete-confirmation-title")}
           open={!!selectedAdminToDelete}
           renderBody={() => (
             <>
-              آیا از حذف ادمین {selectedAdminToDelete?.firstName}{" "}
-              {selectedAdminToDelete?.lastName} با شماره سریال{" "}
-              {selectedAdminToDelete?.id} اطمینان دارید ؟
+              {t("delete-confirmation-description", {
+                user:
+                  selectedAdminToDelete?.firstName +
+                  " " +
+                  selectedAdminToDelete?.lastName,
+                id: selectedAdminToDelete?.id,
+              })}
             </>
           )}
         />
         <TableHeader
-          createText="افزودن ادمین جدید"
-          headTitle="لیست ادمین ها"
+          createText={t("add-new-admin-btn")}
+          headTitle={t("title")}
           onCreate={handleOpenCreateAdminDialog}
         />
         <Card

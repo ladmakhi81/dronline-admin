@@ -10,6 +10,7 @@ import { useLogin } from "@/services/auth/login";
 import { useNotificationStore } from "@/store/notification.store";
 import { useRouter } from "nextjs-toploader/app";
 import { useAuthStore } from "@/store/auth.store";
+import { useTranslations } from "next-intl";
 
 interface FieldsType {
   phone: string;
@@ -17,6 +18,7 @@ interface FieldsType {
 }
 
 const SigninPage: FC = () => {
+  const t = useTranslations("login-page");
   const [form] = Form.useForm<FieldsType>();
   const { mutateAsync: loginMutate } = useLogin();
   const showNotification = useNotificationStore(
@@ -32,7 +34,7 @@ const SigninPage: FC = () => {
       type: "Admin",
     })
       .then((data) => {
-        showNotification("ورود شما با موفقیت انجام گردید", "success");
+        showNotification(t("login-successfully"), "success");
         setAuthStore(data.accessToken, data.refreshToken);
         router.push("/");
       })
@@ -57,7 +59,7 @@ const SigninPage: FC = () => {
       >
         <LoginIcon />
         <Typography.Title style={{ margin: 0, textAlign: "center" }} level={5}>
-          به پنل مدیریتی دکتر آنلاین خوش آمدید
+          {t("title")}
         </Typography.Title>
       </Flex>
       <Form
@@ -71,24 +73,24 @@ const SigninPage: FC = () => {
         <Space direction="vertical" size="large" style={{ width: "100%" }}>
           <Flex vertical>
             <Form.Item
-              label="شماره تماس"
+              label={t("phone")}
               name="phone"
               rules={SIGN_IN_VALIDATION_RULES.phoneNumber}
             >
               <Input
                 size="large"
-                placeholder="شماره تماس خود را وارد کنید"
+                placeholder={t("phone-placeholder")}
                 prefix={<UserIcon />}
               />
             </Form.Item>
             <Form.Item
               rules={SIGN_IN_VALIDATION_RULES.password}
-              label="گذرواژه"
+              label={t("password")}
               name="password"
             >
               <Input
                 size="large"
-                placeholder="گذرواژه خود را وارد کنید"
+                placeholder={t("password-placeholder")}
                 prefix={<KeyIcon />}
                 type="password"
               />
@@ -100,7 +102,7 @@ const SigninPage: FC = () => {
             type="primary"
             style={{ width: "100%" }}
           >
-            ورود به پنل مدیریت
+            {t("login-btn")}
           </Button>
         </Space>
       </Form>

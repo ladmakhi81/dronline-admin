@@ -15,6 +15,7 @@ import { GetSchedulesQuery } from "@/services/schedule/types";
 import { useGetSchedules } from "@/services/schedule/get-schedules";
 import moment from "moment-jalaali";
 import { useGetOrders } from "@/services/order/get-orders";
+import { useTranslations } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -28,6 +29,7 @@ enum SubmitOrderType {
 }
 
 const SubmitOrderDialog: FC<Props> = ({ onClose, open, refetchOrders }) => {
+  const t = useTranslations("orders-page.submit-order-modal");
   const { data: patientsData, isLoading: isPatientsLoading } = useGetUsers({
     type: UserType.Patient,
     limit: MAX_LIST_COUNT_SELECT,
@@ -86,7 +88,7 @@ const SubmitOrderDialog: FC<Props> = ({ onClose, open, refetchOrders }) => {
   const handleFinish = (data: SubmitOrderReqBody) => {
     submitOrderMutate(data)
       .then(() => {
-        showNotification("رزرو با موفقیت ثبت شد", "success");
+        showNotification(t("submit-successfully"), "success");
         refetchOrders();
         handleClose();
         refetchSubmitedOrders();
@@ -107,7 +109,7 @@ const SubmitOrderDialog: FC<Props> = ({ onClose, open, refetchOrders }) => {
       open={open}
       onClose={handleClose}
       onConfirm={handleConfirm}
-      title="ثبت رزرو جدید"
+      title={t("title")}
     >
       <Tabs
         activeKey={activeTabKey}
@@ -118,7 +120,7 @@ const SubmitOrderDialog: FC<Props> = ({ onClose, open, refetchOrders }) => {
         items={[
           {
             key: SubmitOrderType.Date,
-            label: "رزرو براساس تاریخ",
+            label: t("submit-by-date"),
             children: (
               <SubmitOrderDateForm
                 form={submitOrderFormByDate}
@@ -135,7 +137,7 @@ const SubmitOrderDialog: FC<Props> = ({ onClose, open, refetchOrders }) => {
           },
           {
             key: SubmitOrderType.Doctor,
-            label: "رزرو براساس پزشک",
+            label: t("submit-by-doctor"),
             children: (
               <SubmitOrderDoctorForm
                 form={submitOrderFormByDoctor}

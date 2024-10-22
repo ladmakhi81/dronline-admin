@@ -13,6 +13,7 @@ import { useNotificationStore } from "@/store/notification.store";
 import { Checkbox, Form, Input } from "antd";
 import { FC, useEffect } from "react";
 import { CREATE_OR_EDIT_ADMIN_VALIDATION_RULES } from "./validation-rules";
+import { useTranslations } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -27,6 +28,8 @@ const CreateOrEditAdminDialog: FC<Props> = ({
   selectedAdmin,
   refetchAdmins,
 }) => {
+  const t = useTranslations("users.admins-page.modify-admin-dialog");
+
   const [form] = Form.useForm();
 
   const showNotification = useNotificationStore(
@@ -56,7 +59,7 @@ const CreateOrEditAdminDialog: FC<Props> = ({
         id: selectedAdmin.id,
       })
         .then(() => {
-          showNotification("ویرایش ادمین با موفقیت انجام شد", "success");
+          showNotification(t("edit-successfully"), "success");
           handleClose();
           refetchAdmins();
         })
@@ -67,7 +70,7 @@ const CreateOrEditAdminDialog: FC<Props> = ({
         type: UserType.Admin,
       })
         .then(() => {
-          showNotification("ساخت ادمین با موفقیت انجام شد", "success");
+          showNotification(t("create-successfully"), "success");
           handleClose();
           refetchAdmins();
         })
@@ -80,7 +83,7 @@ const CreateOrEditAdminDialog: FC<Props> = ({
     form.resetFields();
   };
 
-  const title = selectedAdmin ? "ویرایش حساب ادمین" : "ساخت حساب ادمین";
+  const title = selectedAdmin ? t("edit-title") : t("create-title");
 
   const isEditMode = !!selectedAdmin;
 
@@ -100,21 +103,21 @@ const CreateOrEditAdminDialog: FC<Props> = ({
         <Form.Item
           rules={CREATE_OR_EDIT_ADMIN_VALIDATION_RULES.firstName}
           name="firstName"
-          label="نام"
+          label={t("firstName")}
         >
           <Input size="large" />
         </Form.Item>
         <Form.Item
           rules={CREATE_OR_EDIT_ADMIN_VALIDATION_RULES.lastName}
           name="lastName"
-          label="نام خانوادگی"
+          label={t("lastName")}
         >
           <Input size="large" />
         </Form.Item>
         <Form.Item
           rules={CREATE_OR_EDIT_ADMIN_VALIDATION_RULES.phone}
           name="phone"
-          label="شماره تماس"
+          label={t("phone")}
         >
           <Input style={{ width: "100%" }} size="large" />
         </Form.Item>
@@ -122,13 +125,13 @@ const CreateOrEditAdminDialog: FC<Props> = ({
           <Form.Item
             rules={CREATE_OR_EDIT_ADMIN_VALIDATION_RULES.password}
             name="password"
-            label="گذرواژه"
+            label={t("password")}
           >
             <Input.Password size="large" />
           </Form.Item>
         )}
         <Form.Item layout="horizontal" name="isActive" valuePropName="checked">
-          <Checkbox>حساب کاربری فعال باشد</Checkbox>
+          <Checkbox>{t("is-active-account")}</Checkbox>
         </Form.Item>
       </Form>
     </OperationDrawer>

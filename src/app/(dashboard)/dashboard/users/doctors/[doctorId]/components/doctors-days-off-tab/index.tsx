@@ -17,12 +17,16 @@ import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
 import AddDaysOffDialog from "../add-days-off-dialog";
 import EmptyWrapper from "@/shared-components/empty-wrapper";
+import { useTranslations } from "next-intl";
 
 interface Props {
   doctor: User;
 }
 
 const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
+  const t = useTranslations("users.doctor-detail-page.daysoff-tab");
+  const tGlobal = useTranslations("globals");
+
   const { mutateAsync: deleteDaysOffMutate } = useDeleteDaysOffById();
 
   const {
@@ -64,10 +68,7 @@ const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
         .then(() => {
           refetchDaysOff();
           setSelectedDaysOffToDelete(undefined);
-          showNotification(
-            "حذف درخواست مرخصی با موفقیت انجام گردید",
-            "success"
-          );
+          showNotification(t("delete-successfully"), "success");
         })
         .catch(() => {});
     }
@@ -84,26 +85,26 @@ const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
 
   const columns = [
     {
-      title: "ردیف",
+      title: t("row"),
       dataIndex: "index",
     },
     {
-      title: "تاریخ مرخصی",
+      title: t("date"),
       dataIndex: "date",
       render: (value: Date) => jalaliDateFormater(value),
     },
     {
-      title: "ساعت مرخصی",
+      title: t("hour"),
       dataIndex: "schedule",
       render: (value: Schedule) => value.startHour + " _ " + value.endHour,
     },
     {
-      title: "تاریخ ثبت درخواست",
+      title: t("created-at"),
       dataIndex: "createdAt",
       render: (createdAt: Date) => jalaliDateTimeFormater(createdAt),
     },
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       render: (_: unknown, record: AnyObject) => {
         const daysoffItem = record as DaysOff;
         return (
@@ -112,7 +113,7 @@ const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
             size="small"
             type="link"
           >
-            حذف
+            {tGlobal("delete")}
           </Button>
         );
       },
@@ -126,15 +127,18 @@ const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
           onClose={handleCloseDeleteConfirmation}
           onConfirm={handleConfirmDelete}
           open={!!selectedDaysoffToDelete}
-          title="حذف درخواست مرخصی"
+          title={t("delete-confirmation-title")}
           renderBody={() => (
             <>
-              آیا از حذف درخواست مرخصی در تاریخ{" "}
-              <span style={{ marginInline: "5px" }} dir="ltr">
-                {jalaliDateFormater(new Date(selectedDaysoffToDelete.date))}
-              </span>
-              برای ساعت {selectedDaysoffToDelete.schedule.startHour}_
-              {selectedDaysoffToDelete.schedule.endHour} اطمینان دارید ؟
+              {t("delete-confirmation-description", {
+                date: jalaliDateFormater(
+                  new Date(selectedDaysoffToDelete.date)
+                ),
+                hour:
+                  selectedDaysoffToDelete.schedule.startHour +
+                  "_" +
+                  selectedDaysoffToDelete.schedule.endHour,
+              })}
             </>
           )}
         />
@@ -147,10 +151,10 @@ const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
       />
       <EmptyWrapper
         isEmpty={daysOff.length === 0}
-        title="درخواست مرخصی"
-        description="درخواست مرخصی موجود نیست, برای ایجاد درخواست مرخصی باید روی دکمه زیر کلیک کنید"
+        title={t("empty-wrapper-title")}
+        description={t("empty-wrapper-description")}
         btn={{
-          text: "درخواست مرخصی جدید",
+          text: t("add-new-daysoff"),
           click: handleOpenCreateDaysOffDialog,
         }}
       >
@@ -160,7 +164,7 @@ const DoctorsDaysOffTab: FC<Props> = ({ doctor }) => {
           justify="flex-end"
           align="center"
         >
-          <Button type="primary">ثبت درخواست مرخصی</Button>
+          <Button type="primary">{t("add-new-daysoff")}</Button>
         </Flex>
         <TableWrapper
           loading={isDaysOffLoading || isDaysOffFetching}

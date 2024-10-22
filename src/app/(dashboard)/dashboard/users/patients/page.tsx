@@ -14,8 +14,11 @@ import DeleteConfirmation from "@/shared-components/delete-confirmation";
 import { useDeleteUser } from "@/services/user/delete-user";
 import { useNotificationStore } from "@/store/notification.store";
 import EditPasswordDialog from "../components/edit-password-dialog";
+import { useTranslations } from "next-intl";
 
 const PatientsPage: FC = () => {
+  const t = useTranslations("users.patients-page");
+  const tGlobal = useTranslations("globals");
   const [queryApi, setQueryApi] = useState<GetUsersQuery>({
     type: UserType.Patient,
     limit: 10,
@@ -80,7 +83,7 @@ const PatientsPage: FC = () => {
       deleteUserMutate(selectedUserToDelete?.id)
         .then(() => {
           setSelectedUserToDelete(undefined);
-          showNotification("بیمار مورد نظر با موفقیت حذف گردید", "success");
+          showNotification(t("delete-successfully"), "success");
           refetchPatientsData();
         })
         .catch(() => {});
@@ -101,11 +104,11 @@ const PatientsPage: FC = () => {
 
   const columns = [
     {
-      title: "شماره پرونده",
+      title: t("id"),
       dataIndex: "id",
     },
     {
-      title: "نام و نام خانوادگی بیمار",
+      title: t("fullName"),
       dataIndex: "fullName",
       render: (_: unknown, record: AnyObject) => {
         const user = record as User;
@@ -117,17 +120,17 @@ const PatientsPage: FC = () => {
       },
     },
     {
-      title: "شماره تماس بیمار",
+      title: t("phone"),
       dataIndex: "phone",
     },
     {
-      title: "تعداد رزرو های ثبت شده",
+      title: t("orders-count"),
       dataIndex: "ordersCount",
       render: () => 0,
     },
     ...TABLE_DEFAULT_COLUMNS,
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       width: 200,
       render: (_: unknown, record: AnyObject) => {
         const user = record as User;
@@ -139,7 +142,7 @@ const PatientsPage: FC = () => {
               size="small"
               type="link"
             >
-              ویرایش
+              {tGlobal("edit")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -147,7 +150,7 @@ const PatientsPage: FC = () => {
               size="small"
               type="link"
             >
-              تغییر گذرواژه
+              {t("edit-password")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -158,7 +161,7 @@ const PatientsPage: FC = () => {
               size="small"
               type="link"
             >
-              حذف
+              {tGlobal("delete")}
             </Button>
           </Flex>
         );
@@ -185,26 +188,30 @@ const PatientsPage: FC = () => {
         open={!!selectedUserToDelete}
         renderBody={() => (
           <>
-            آیا از حذف بیمار {selectedUserToDelete?.firstName}{" "}
-            {selectedUserToDelete?.lastName} با شماره تماس{" "}
-            {selectedUserToDelete?.phone} اطمینان دارید؟
+            {t("delete-confirmation-description", {
+              user:
+                selectedUserToDelete?.firstName +
+                " " +
+                selectedUserToDelete?.lastName,
+              phone: selectedUserToDelete?.phone,
+            })}
           </>
         )}
-        title="حذف بیمار"
+        title={t("delete-confirmation-title")}
       />
 
       <EmptyWrapper
         isEmpty={patientsData?.count === 0}
-        title="لیست بیماران"
-        description="بیماری ایجاد نشده است, برای ساخت بیمار روی افزودن بیمار کلیک کنید"
+        title={t("empty-wrapper-title")}
+        description={t("empty-wrapper-description")}
         btn={{
           click: handleOpenCreatePatientDialog,
-          text: "افزودن بیمار جدید",
+          text: t("add-patient-btn"),
         }}
       >
         <TableHeader
-          createText="افزودن بیمار جدید"
-          headTitle="لیست بیماران"
+          createText={t("add-patient-btn")}
+          headTitle={t("title")}
           onCreate={handleOpenCreatePatientDialog}
         />
         <Card

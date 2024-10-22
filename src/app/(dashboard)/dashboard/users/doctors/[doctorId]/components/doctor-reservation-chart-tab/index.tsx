@@ -15,12 +15,16 @@ import { Button, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
 import AddScheduleDialog from "../add-schedule-dialog";
+import { useTranslations } from "next-intl";
 
 interface Props {
   doctor: User;
 }
 
 const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
+  const t = useTranslations("users.doctor-detail-page.reservation-chart-tab");
+  const tGlobal = useTranslations("globals");
+
   const showNotification = useNotificationStore(
     (state) => state.addNotification
   );
@@ -64,7 +68,7 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
     if (selectedScheduleToDelete) {
       deleteScheduleMutate(selectedScheduleToDelete.id)
         .then(() => {
-          showNotification("حذف چارت رزرو با موفقیت انجام شد", "success");
+          showNotification(t("delete-successfully"), "success");
           refetchSchedulesData();
           setSelectedScheduleToDelete(undefined);
         })
@@ -74,16 +78,16 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
 
   const columns = [
     {
-      title: "ردیف",
+      title: t("row"),
       dataIndex: "index",
     },
     {
-      title: "روز هفته",
+      title: t("day"),
       dataIndex: "day",
       render: (day: number) => WEEK_DAY.get(day),
     },
     {
-      title: "بازه زمانی",
+      title: t("period"),
       dataIndex: "period",
       render: (_: unknown, record: AnyObject) => {
         const schedule = record as Schedule;
@@ -91,29 +95,29 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
       },
     },
     {
-      title: "نوع برگزاری",
+      title: t("type"),
       dataIndex: "type",
     },
     {
-      title: "شهر",
+      title: t("city"),
       dataIndex: "location",
       render: (location: Location) => {
         return location?.city;
       },
     },
     {
-      title: "آدرس",
+      title: t("address"),
       dataIndex: "location",
       render: (location: Location) => {
         return location?.address;
       },
     },
     {
-      title: "شماره اتاق",
+      title: t("room"),
       dataIndex: "room",
     },
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       width: 70,
       render: (_: unknown, record: AnyObject) => {
         const schedule = record as Schedule;
@@ -123,7 +127,7 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
             size="small"
             type="link"
           >
-            حذف
+            {tGlobal("delete")}
           </Button>
         );
       },
@@ -160,22 +164,25 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
           onConfirm={handleConfirmDeleteSchedule}
           onClose={handleCloseDeleteConfirmation}
           open={!!selectedScheduleToDelete}
-          title="حذف چارت رزرو"
+          title={t("delete-confirmation-title")}
           renderBody={() => (
             <>
-              آیا از حذف چارت رزرو در روز{" "}
-              {WEEK_DAY.get(selectedScheduleToDelete?.day)} ساعت{" "}
-              {selectedScheduleToDelete.startHour} {" - "}
-              {selectedScheduleToDelete.endHour} اطمینان دارید؟
+              {t("delete-confirmation-description", {
+                day: WEEK_DAY.get(selectedScheduleToDelete?.day),
+                hour:
+                  selectedScheduleToDelete.startHour +
+                  " - " +
+                  selectedScheduleToDelete.endHour,
+              })}
             </>
           )}
         />
       )}
       <EmptyWrapper
         isEmpty={schedulesData?.count === 0}
-        title="چارت رزرو"
-        description="آیتمی در چارت رزرو وجود ندارد, برای ساخت آیتم جدید از دکمه زیر استفاده کنید"
-        btn={{ text: "افزودن رزرو جدید", click: handleOpenCreateSchedule }}
+        title={t("empty-wrapper-title")}
+        description={t("empty-wrapper-description")}
+        btn={{ text: t("add-new-schedule"), click: handleOpenCreateSchedule }}
       >
         <Flex
           onClick={handleOpenCreateSchedule}
@@ -183,7 +190,7 @@ const DoctorReservationChartTab: FC<Props> = ({ doctor }) => {
           justify="flex-end"
           align="center"
         >
-          <Button type="primary">ثبت رزرو جدید</Button>
+          <Button type="primary">{t("add-new-schedule")}</Button>
         </Flex>
         <TableWrapper
           loading={isFetchingSchedules || isSchedulesLoading}

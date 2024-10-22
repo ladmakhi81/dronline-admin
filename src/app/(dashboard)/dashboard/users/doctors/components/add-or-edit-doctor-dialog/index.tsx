@@ -12,6 +12,8 @@ import OperationDrawer from "@/shared-components/operation-drawer";
 import { Form, Input, Radio, Select } from "antd";
 import { FC, useEffect } from "react";
 import { ADD_OR_EDIT_DOCTOR_VALIDATION_RULES } from "./validation-rules";
+import { useTranslations } from "next-intl";
+import { MAX_LIST_COUNT_SELECT } from "@/constant/max-list-item-count-dropdown";
 
 interface Props {
   open: boolean;
@@ -20,19 +22,20 @@ interface Props {
   onConfirm: (data: CreateDoctorReqBody | EditDoctorReqBody) => void;
 }
 
-const MAX_COUNT_LIST = 10000000;
-
 const AddOrEditDoctorDialog: FC<Props> = ({
   selectedDoctor,
   onClose,
   onConfirm,
   open,
 }) => {
+  const t = useTranslations("users.doctors-page.modify-doctor-modal");
+  const tGlobal = useTranslations("globals");
+
   const [form] = Form.useForm<CreateDoctorReqBody | EditDoctorReqBody>();
 
   const { data: categoriesData, isLoading: isCategoriesLoading } =
     useGetCategories({
-      limit: MAX_COUNT_LIST,
+      limit: MAX_LIST_COUNT_SELECT,
       page: 0,
     });
 
@@ -67,7 +70,7 @@ const AddOrEditDoctorDialog: FC<Props> = ({
     }
   }, [form, selectedDoctor]);
 
-  const title = selectedDoctor ? "ویرایش پروفایل پزشک" : "ساخت پزشک جدید";
+  const title = selectedDoctor ? t("edit-title") : t("create-title");
 
   return (
     <OperationDrawer
@@ -85,90 +88,90 @@ const AddOrEditDoctorDialog: FC<Props> = ({
       >
         <Form.Item
           name="firstName"
-          label="نام پزشک"
+          label={t("firstName")}
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.firstName}
         >
-          <Input placeholder="نام پزشک" size="large" />
+          <Input placeholder={t("firstName")} size="large" />
         </Form.Item>
         <Form.Item
           name="lastName"
-          label="نام خانوادگی پزشک"
+          label={t("lastName")}
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.lastName}
         >
-          <Input placeholder="نام خانوادگی پزشک" size="large" />
+          <Input placeholder={t("lastName")} size="large" />
         </Form.Item>
         <Form.Item
           name="phone"
-          label="شماره تماس پزشک"
+          label={t("phone")}
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.phone}
         >
           <Input
             style={{ width: "100%" }}
-            placeholder="شماره تماس 1"
+            placeholder={t("phone-1-placeholder")}
             size="large"
           />
         </Form.Item>
         <Form.Item
           name="phone2"
-          label="شماره تماس پزشک"
+          label={t("phone")}
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.phone2}
         >
           <Input
             style={{ width: "100%" }}
-            placeholder="شماره تماس 2"
+            placeholder={t("phone-2-placeholder")}
             size="large"
           />
         </Form.Item>
         <Form.Item
           name="degreeOfEducation"
-          label="مدرک تحصیلی پزشک"
+          label={t("degree-of-education")}
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.degreeOfEducation}
         >
           <Select
             options={[
               {
-                label: DegtreeOfEducation.diploma,
+                label: tGlobal(DegtreeOfEducation.diploma),
                 value: DegtreeOfEducation.diploma,
               },
               {
-                label: DegtreeOfEducation.associate,
+                label: tGlobal(DegtreeOfEducation.associate),
                 value: DegtreeOfEducation.associate,
               },
               {
-                label: DegtreeOfEducation.bachelor,
+                label: tGlobal(DegtreeOfEducation.bachelor),
                 value: DegtreeOfEducation.bachelor,
               },
               {
-                label: DegtreeOfEducation.master,
+                label: tGlobal(DegtreeOfEducation.master),
                 value: DegtreeOfEducation.master,
               },
               {
-                label: DegtreeOfEducation.doctorate,
+                label: tGlobal(DegtreeOfEducation.doctorate),
                 value: DegtreeOfEducation.doctorate,
               },
             ]}
-            placeholder="دیپلم یا فوق دیپلم یا ..."
+            placeholder={t("degree-of-education-placeholder")}
             size="large"
           />
         </Form.Item>
         <Form.Item
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.gender}
           name="gender"
-          label="جنسیت"
+          label={t("gender")}
         >
           <Radio.Group>
-            <Radio value={Gender.male}>مرد</Radio>
-            <Radio value={Gender.female}>زن</Radio>
-            <Radio value={Gender.unknown}>نامشخص</Radio>
+            <Radio value={Gender.male}>{t("male")}</Radio>
+            <Radio value={Gender.female}>{t("female")}</Radio>
+            <Radio value={Gender.unknown}>{t("unknown")}</Radio>
           </Radio.Group>
         </Form.Item>
         <Form.Item
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.workingFields}
           name="workingFields"
-          label="زمینه های تخصصی"
+          label={t("working-fields")}
         >
           <Select
-            placeholder="زمینه های تخصصی که پزشک دارد"
+            placeholder={t("working-fields-placeholder")}
             size="large"
             options={categoriesData?.content || []}
             loading={isCategoriesLoading}
@@ -182,19 +185,16 @@ const AddOrEditDoctorDialog: FC<Props> = ({
         <Form.Item
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.address}
           name="address"
-          label="آدرس"
+          label={t("address")}
         >
-          <Input.TextArea rows={4} placeholder="آدرس مطب پزشک" />
+          <Input.TextArea rows={4} placeholder={t("address-placeholder")} />
         </Form.Item>
         <Form.Item
           rules={ADD_OR_EDIT_DOCTOR_VALIDATION_RULES.bio}
           name="bio"
-          label="بیوگرافی"
+          label={t("bio")}
         >
-          <Input.TextArea
-            rows={4}
-            placeholder="خلاصه ای از پزشک و نحوه درمانش"
-          />
+          <Input.TextArea rows={4} placeholder={t("bio-placeholder")} />
         </Form.Item>
       </Form>
     </OperationDrawer>

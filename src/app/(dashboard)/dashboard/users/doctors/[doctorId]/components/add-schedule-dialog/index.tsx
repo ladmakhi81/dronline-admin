@@ -11,6 +11,8 @@ import { Form, Input, Select, TimePicker } from "antd";
 import { Dayjs } from "dayjs";
 import { FC, useMemo } from "react";
 import { ADD_SCHEDULE_VALIDATION_RULES } from "./validation-rules";
+import { MAX_LIST_COUNT_SELECT } from "@/constant/max-list-item-count-dropdown";
+import { useTranslations } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -28,14 +30,18 @@ interface FieldTypes {
   type: ScheduleType;
 }
 
-const MAX_LIMIT_COUNT = 10000;
-
 const AddScheduleDialog: FC<Props> = ({
   doctor,
   onClose,
   open,
   refetchSchedules,
 }) => {
+  const t = useTranslations(
+    "users.doctor-detail-page.reservation-chart-tab.add-new-schedule-modal"
+  );
+
+  const tGlobals = useTranslations("globals");
+
   const showNotification = useNotificationStore(
     (state) => state.addNotification
   );
@@ -47,7 +53,7 @@ const AddScheduleDialog: FC<Props> = ({
   const formWatched = Form.useWatch([], form);
 
   const { data: locationsData, isLoading: isLocationDataLoading } =
-    useGetLocations({ limit: MAX_LIMIT_COUNT, page: 0 });
+    useGetLocations({ limit: MAX_LIST_COUNT_SELECT, page: 0 });
 
   const locations = useMemo(() => {
     return (
@@ -76,7 +82,7 @@ const AddScheduleDialog: FC<Props> = ({
         handleClose();
         form.resetFields();
         refetchSchedules();
-        showNotification("اطلاعات جدید رزرو ثبت شد", "success");
+        showNotification(t("added-successfully"), "success");
       })
       .catch(() => {});
   };
@@ -89,9 +95,9 @@ const AddScheduleDialog: FC<Props> = ({
   );
 
   const SCHEDULE_TYPE_OPTIONS = [
-    { label: "حضوری و آنلاین", value: ScheduleType.both },
-    { label: "حضوری", value: ScheduleType.onsite },
-    { label: "آنلاین", value: ScheduleType.online },
+    { label: tGlobals(ScheduleType.both), value: ScheduleType.both },
+    { label: tGlobals(ScheduleType.onsite), value: ScheduleType.onsite },
+    { label: tGlobals(ScheduleType.online), value: ScheduleType.online },
   ];
 
   const canSelectRoomAndLocation = [
@@ -102,7 +108,7 @@ const AddScheduleDialog: FC<Props> = ({
   return (
     <OperationDrawer
       onConfirm={() => form.submit()}
-      title="افزودن آیتم جدید به چارت رزرو"
+      title={t("title")}
       open={open}
       onClose={handleClose}
     >
@@ -116,10 +122,10 @@ const AddScheduleDialog: FC<Props> = ({
         <Form.Item
           rules={ADD_SCHEDULE_VALIDATION_RULES.day}
           name="day"
-          label="روز هفته"
+          label={t("day")}
         >
           <Select
-            placeholder="انتخاب روز هفته"
+            placeholder={t("day-placeholder")}
             size="large"
             options={WEEK_OPTIONS}
           />
@@ -127,10 +133,10 @@ const AddScheduleDialog: FC<Props> = ({
         <Form.Item
           rules={ADD_SCHEDULE_VALIDATION_RULES.type}
           name="type"
-          label="نوع برگزاری جلسه"
+          label={t("type")}
         >
           <Select
-            placeholder="حضوری یا آنلاین"
+            placeholder={t("type-placeholder")}
             size="large"
             options={SCHEDULE_TYPE_OPTIONS}
           />
@@ -140,11 +146,11 @@ const AddScheduleDialog: FC<Props> = ({
             canSelectRoomAndLocation
           )}
           name="location"
-          label="محل برگزاری"
+          label={t("location")}
         >
           <Select
             disabled={!canSelectRoomAndLocation}
-            placeholder="انتخاب محل برگزاری"
+            placeholder={t("location-placeholder")}
             size="large"
             options={locations}
             loading={isLocationDataLoading}
@@ -153,25 +159,25 @@ const AddScheduleDialog: FC<Props> = ({
         <Form.Item
           rules={ADD_SCHEDULE_VALIDATION_RULES.room(canSelectRoomAndLocation)}
           name="room"
-          label="اتاق"
+          label={t("room")}
         >
           <Input
             disabled={!canSelectRoomAndLocation}
-            placeholder="اتاق مربوط به برگزاری جلسه"
+            placeholder={t("room-placeholder")}
             size="large"
           />
         </Form.Item>
         <Form.Item
           rules={ADD_SCHEDULE_VALIDATION_RULES.startHour}
           name="startHour"
-          label="زمان شروع جلسه"
+          label={t("start-hour")}
         >
           <TimePicker size="large" format="HH:mm" style={{ width: "100%" }} />
         </Form.Item>
         <Form.Item
           rules={ADD_SCHEDULE_VALIDATION_RULES.endHour}
           name="endHour"
-          label="زمان پایان جلسه"
+          label={t("end-hour")}
         >
           <TimePicker size="large" format="HH:mm" style={{ width: "100%" }} />
         </Form.Item>

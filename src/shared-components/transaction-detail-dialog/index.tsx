@@ -5,6 +5,7 @@ import { Descriptions, Flex, Modal } from "antd";
 import { FC } from "react";
 import { jalaliDateTimeFormater } from "@/utils/date-format";
 import UserDetailInfoCard from "@/shared-components/user-detail-info-card";
+import { useTranslations } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const TransactionDetailDialog: FC<Props> = ({ onClose, open, transaction }) => {
+  const t = useTranslations("common.transaction-detail-modal");
+
   const handleClose = () => {
     onClose();
   };
@@ -28,27 +31,23 @@ const TransactionDetailDialog: FC<Props> = ({ onClose, open, transaction }) => {
     >
       <Flex vertical gap="24px">
         <UserDetailInfoCard
-          title="اطلاعات مربوط به پرداخت کننده"
+          title={t("info-patient")}
           user={transaction.customer}
         />
         <UserDetailInfoCard
-          title="اطلاعات مربوط به دریافت کننده"
+          title={t("info-doctor")}
           user={transaction.doctor}
         />
-        <Descriptions
-          bordered
-          layout="vertical"
-          title="اطلاعات مربوط به تراکنش"
-        >
+        <Descriptions bordered layout="vertical" title={t("info-transaction")}>
           {transaction.order && (
-            <Descriptions.Item label="سریال رزرو">
+            <Descriptions.Item label={t("order-id")}>
               {transaction.order.id}
             </Descriptions.Item>
           )}
-          <Descriptions.Item label="سریال تراکنش">
+          <Descriptions.Item label={t("transaction-id")}>
             {transaction.id}
           </Descriptions.Item>
-          <Descriptions.Item label="وضعیت تراکنش">
+          <Descriptions.Item label={t("status")}>
             <span
               style={{
                 color:
@@ -58,23 +57,23 @@ const TransactionDetailDialog: FC<Props> = ({ onClose, open, transaction }) => {
               }}
             >
               {transaction.status === TransactionStatus.Payed
-                ? "پرداخت شده"
-                : "پرداخت نشده"}
+                ? t("payed")
+                : t("not-payed")}
             </span>
           </Descriptions.Item>
-          <Descriptions.Item label="مبلغ">
-            {transaction.amount.toLocaleString()} تومان
+          <Descriptions.Item label={t("price")}>
+            {transaction.amount.toLocaleString()} {t("toman")}
           </Descriptions.Item>
           {transaction.status === TransactionStatus.NotPayed ? (
-            <Descriptions.Item label="لینک پرداخت">
+            <Descriptions.Item label={t("pay-link")}>
               {transaction.payedLink}
             </Descriptions.Item>
           ) : (
             <>
-              <Descriptions.Item label="تاریخ پرداخت">
+              <Descriptions.Item label={t("payed-date")}>
                 {jalaliDateTimeFormater(transaction.payedAt)}
               </Descriptions.Item>
-              <Descriptions.Item label="شماره پیگیری">
+              <Descriptions.Item label={t("ref-id")}>
                 {transaction.refId}
               </Descriptions.Item>
             </>

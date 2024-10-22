@@ -5,7 +5,9 @@ import { User } from "@/services/user/types";
 import OperationDrawer from "@/shared-components/operation-drawer";
 import { useNotificationStore } from "@/store/notification.store";
 import { Form, Input } from "antd";
+import { useTranslations } from "next-intl";
 import { FC } from "react";
+import { EDIT_PASSWORD_VALIDATION_RULES } from "./validation-rules";
 
 interface FieldsType {
   password: string;
@@ -18,6 +20,7 @@ interface Props {
 }
 
 const EditPasswordDialog: FC<Props> = ({ onClose, open, user = {} }) => {
+  const t = useTranslations("common.edit-password-modal");
   const { mutateAsync: editPasswordMutate } = useEditPassword();
   const [form] = Form.useForm<FieldsType>();
   const showNotification = useNotificationStore(
@@ -36,16 +39,13 @@ const EditPasswordDialog: FC<Props> = ({ onClose, open, user = {} }) => {
     if (user) {
       editPasswordMutate({ id: user.id!, password: data.password }).then(() => {
         handleClose();
-        showNotification(
-          "پسورد کاربر مورد نظر با موفقیت ویرایش گردید",
-          "success"
-        );
+        showNotification(t("edit-successfully"), "success");
         form.resetFields();
       });
     }
   };
 
-  const title = `تغییر گذرواژه ${user.firstName} ${user.lastName}`;
+  const title = t("title", { user: user?.firstName + " " + user?.lastName });
 
   const initialValues = {
     password: "",
@@ -67,18 +67,9 @@ const EditPasswordDialog: FC<Props> = ({ onClose, open, user = {} }) => {
         form={form}
       >
         <Form.Item
-          rules={[
-            {
-              required: true,
-              message: "وارد کردن گذرواژه الزامی میباشد",
-            },
-            {
-              min: 8,
-              message: "گذرواژه حداقل باید 8 کاراکتر داشته باشد",
-            },
-          ]}
+          rules={EDIT_PASSWORD_VALIDATION_RULES.password}
           name="password"
-          label="گذرواژه جدید"
+          label={t("password")}
         >
           <Input.Password size="large" />
         </Form.Item>

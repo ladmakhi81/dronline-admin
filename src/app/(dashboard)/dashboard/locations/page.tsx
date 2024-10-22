@@ -14,9 +14,12 @@ import { useNotificationStore } from "@/store/notification.store";
 import EmptyWrapper from "@/shared-components/empty-wrapper";
 import TableHeader from "@/shared-components/table-header";
 import { TABLE_DEFAULT_COLUMNS } from "@/constant/table-default-columns.constant";
+import { useTranslations } from "next-intl";
 
 const LocationsPage: FC = () => {
   const [searchQuery, setSearchQuery] = useState<GetLocationsQuery>({});
+  const t = useTranslations("locations-page");
+  const tGlobal = useTranslations("globals");
 
   const { mutateAsync: deleteLocationMutate } = useDeleteLocation();
 
@@ -75,7 +78,7 @@ const LocationsPage: FC = () => {
     if (selectedLocationToDelete?.id) {
       deleteLocationMutate(selectedLocationToDelete?.id).then(() => {
         handleCloseDeleteConfirmation();
-        showNotification("حذف لوکیشن با موفقیت انجام گردید", "success");
+        showNotification(t("delete-successfully"), "success");
         refetchLocations();
       });
     }
@@ -91,15 +94,15 @@ const LocationsPage: FC = () => {
 
   const columns = [
     {
-      title: "شهر",
+      title: t("city"),
       dataIndex: "city",
     },
     {
-      title: "آدرس",
+      title: t("address"),
       dataIndex: "address",
     },
     {
-      title: "تعداد شیفت های موجود",
+      title: t("doctor-schedules-count"),
       dataIndex: "doctorSchedules",
       width: 200,
       render: (value: Schedule[]) => {
@@ -108,7 +111,7 @@ const LocationsPage: FC = () => {
     },
     ...TABLE_DEFAULT_COLUMNS,
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       width: 200,
       render: (_: unknown, record: AnyObject) => {
         return (
@@ -118,7 +121,7 @@ const LocationsPage: FC = () => {
               size="small"
               type="link"
             >
-              ویرایش
+              {tGlobal("edit")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -126,7 +129,7 @@ const LocationsPage: FC = () => {
               size="small"
               type="link"
             >
-              حذف
+              {tGlobal("delete")}
             </Button>
           </Flex>
         );
@@ -146,27 +149,29 @@ const LocationsPage: FC = () => {
         open={!!selectedLocationToDelete}
         onClose={handleCloseDeleteConfirmation}
         onConfirm={handleConfirmDeleteLocation}
-        title="حذف لوکیشن"
+        title={t("delete-confirmation-title")}
         renderBody={() => (
           <Typography.Text>
-            آیا از حذف شهر {selectedLocationToDelete?.city} آدرس{" "}
-            {selectedLocationToDelete?.address} اطمینان دارید؟
+            {t("delete-confirmation-text", {
+              city: selectedLocationToDelete?.city,
+              address: selectedLocationToDelete?.address,
+            })}
           </Typography.Text>
         )}
       />
 
       <EmptyWrapper
-        description="ابتدا باید لوکیشن سرویس دهنده ای ایجاد کنید"
-        title="لوکیشن سرویس دهنده"
+        description={t("empty-wrapper-description")}
+        title={t("empty-wrapper-title")}
         isEmpty={locations.length === 0}
         btn={{
           click: handleCreateLocation,
-          text: "ساخت لوکیشن",
+          text: t("create-title"),
         }}
       >
         <TableHeader
-          createText="ساخت لوکیشن"
-          headTitle="لیست لوکیشن های سرویس دهنده"
+          createText={t("create-title")}
+          headTitle={t("title")}
           onCreate={handleCreateLocation}
         />
         <Card

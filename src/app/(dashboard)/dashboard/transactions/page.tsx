@@ -14,8 +14,11 @@ import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
 import OrderDetailDialog from "@/shared-components/order-detail-dialog";
 import TransactionDetailDialog from "@/shared-components/transaction-detail-dialog";
+import { useTranslations } from "next-intl";
 
 const TransactionsPage: FC = () => {
+  const t = useTranslations("transactions-page");
+  const tGlobal = useTranslations("globals");
   const [apiQuery, setApiQuery] = useState<PageableQuery>({
     limit: 10,
     page: 0,
@@ -58,36 +61,37 @@ const TransactionsPage: FC = () => {
 
   const handleCopyPayLinkURL = (transaction: Transaction) => {
     navigator.clipboard.writeText(transaction.payedLink);
-    showNotification("لینک پرداخت کپی شد", "success");
+    showNotification(t("copy-link-successfully"), "success");
   };
 
   const columns = [
     {
       dataIndex: "id",
-      title: "سریال تراکنش",
+      title: t("id"),
     },
     {
       dataIndex: "customer",
-      title: "مشتری",
+      title: t("customer"),
       render: (customer: User) => customer.firstName + " " + customer.lastName,
     },
     {
       dataIndex: "doctor",
-      title: "پزشک",
+      title: t("doctor"),
       render: (doctor: User) => doctor.firstName + " " + doctor.lastName,
     },
     {
       dataIndex: "amount",
-      title: "مبلغ پرداخت شده",
-      render: (amount: number) => `${amount.toLocaleString()} تومان`,
+      title: t("amount"),
+      render: (amount: number) =>
+        `${amount.toLocaleString()} ${tGlobal("toman")}`,
     },
     {
       dataIndex: "status",
-      title: "وضعیت تراکنش",
+      title: t("status"),
     },
     ...TABLE_DEFAULT_COLUMNS,
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       width: 200,
       render: (_: unknown, record: AnyObject) => {
         const transaction = record as Transaction;
@@ -98,7 +102,7 @@ const TransactionsPage: FC = () => {
               size="small"
               type="link"
             >
-              جزئیات
+              {tGlobal("detail")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -107,7 +111,7 @@ const TransactionsPage: FC = () => {
               type="link"
               onClick={handleCopyPayLinkURL.bind(null, transaction)}
             >
-              کپی کردن لینک پرداخت
+              {t("copy-link")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -118,7 +122,7 @@ const TransactionsPage: FC = () => {
               size="small"
               type="link"
             >
-              نمایش فاکتور
+              {t("order-detail-text")}
             </Button>
           </Flex>
         );
@@ -130,10 +134,10 @@ const TransactionsPage: FC = () => {
     <Flex style={{ height: "100%", overflow: "auto" }} vertical gap="24px">
       <EmptyWrapper
         isEmpty={transactionsData?.count === 0}
-        title="لیست تراکنش ها"
-        description="در این صفحه میتوانید لیست تراکنش های ایجاد شده را مشاهده کنید . در حال حاضر تراکنشی ایجاد نشده است"
+        title={t("empty-wrapper-title")}
+        description={t("empty-wrapper-description")}
       >
-        <TableHeader headTitle="لیست تراکنش ها" />
+        <TableHeader headTitle={t("title")} />
         <Card
           style={{ flex: 1 }}
           styles={{ body: { padding: "15px", height: "100%" } }}

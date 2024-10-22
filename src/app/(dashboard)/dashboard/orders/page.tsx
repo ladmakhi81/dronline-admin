@@ -19,8 +19,12 @@ import { Button, Card, Divider, Flex } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { FC, useMemo, useState } from "react";
 import SubmitOrderDialog from "./components/submit-order-dialog";
+import { useTranslations } from "next-intl";
 
 const OrdersPage: FC = () => {
+  const t = useTranslations("orders-page");
+  const tGlobal = useTranslations("globals");
+
   const [apiQuery, setApiQuery] = useState<GetOrderQuery>({
     limit: 10,
     page: 0,
@@ -107,26 +111,26 @@ const OrdersPage: FC = () => {
   const columns = [
     {
       dataIndex: "id",
-      title: "سریال نوبت",
+      title: t("id"),
     },
     {
       dataIndex: "patient",
-      title: "مراجعه کننده",
+      title: t("patient"),
       render: (patient: User) => patient.firstName + " " + patient.lastName,
     },
     {
       dataIndex: "doctor",
-      title: "پزشک",
+      title: t("doctor"),
       render: (doctor: User) => doctor.firstName + " " + doctor.lastName,
     },
     {
       dataIndex: "date",
-      title: "تاریخ نوبت",
+      title: t("date"),
       render: (date: Date) => jalaliDateFormater(date),
     },
     {
       dataIndex: "time",
-      title: "زمان نوبت",
+      title: t("time"),
       render: (_: unknown, record: AnyObject) => {
         const order = record as Order;
         return order.startHour + "_" + order.endHour;
@@ -134,20 +138,20 @@ const OrdersPage: FC = () => {
     },
     {
       dataIndex: "day",
-      title: "روز هفته",
+      title: t("day"),
       render: (day: number) => WEEK_DAY.get(day),
     },
     {
       dataIndex: "status",
-      title: "وضعیت رزرو",
+      title: t("status"),
     },
     {
       dataIndex: "type",
-      title: "نحوه برگزاری",
+      title: t("type"),
     },
     ...TABLE_DEFAULT_COLUMNS,
     {
-      title: "عملیات",
+      title: tGlobal("operation"),
       width: 200,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fixed: "right" as any,
@@ -162,7 +166,7 @@ const OrdersPage: FC = () => {
               type="link"
               onClick={handleOpenViewTransactionOrderDialog.bind(null, order)}
             >
-              تراکنش
+              {t("transaction")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -171,7 +175,7 @@ const OrdersPage: FC = () => {
               size="small"
               type="link"
             >
-              کنسل کردن
+              {t("cancel")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -179,7 +183,7 @@ const OrdersPage: FC = () => {
               size="small"
               type="link"
             >
-              حذف
+              {tGlobal("delete")}
             </Button>
             <Divider style={{ height: "20px" }} type="vertical" />
             <Button
@@ -187,7 +191,7 @@ const OrdersPage: FC = () => {
               size="small"
               type="link"
             >
-              جزئیات
+              {tGlobal("detail")}
             </Button>
           </Flex>
         );
@@ -204,13 +208,13 @@ const OrdersPage: FC = () => {
       />
       <EmptyWrapper
         isEmpty={ordersData?.count === 0}
-        title="لیست نوبت های رزرو شده"
-        description="نوبت رزرو شده ای یافت نشد, برای ثبت رزرو نوبت از دکمه زیر استفاده کنید"
-        btn={{ click: handleOpenSubmitOrderDialog, text: "ثبت رزرو نوبت" }}
+        title={t("empty-wrapper-title")}
+        description={t("empty-wrapper-description")}
+        btn={{ click: handleOpenSubmitOrderDialog, text: t("add-new-btn") }}
       >
         <TableHeader
-          headTitle="لیست نوبت های رزرو شده"
-          createText="ثبت نوبت جدید"
+          headTitle={t("title")}
+          createText={t("add-new-btn")}
           onCreate={handleOpenSubmitOrderDialog}
         />
         <Card
@@ -236,13 +240,13 @@ const OrdersPage: FC = () => {
             onClose={handleCloseDeleteOrderConfirmation}
             onConfirm={handleConfirmDeleteOrder}
             open={!!selectedOrderToDelete}
-            title="حذف رزرو نوبت"
+            title={t("delete-confirmation-title")}
             renderBody={() => (
               <>
-                آیا از حذف نوبت رزرو برای{" "}
-                {selectedOrderToDelete?.patient?.firstName}{" "}
-                {selectedOrderToDelete?.patient?.lastName} با سریال{" "}
-                {selectedOrderToDelete?.id} اطمینان دارید؟
+                {t("delete-confirmation-text", {
+                  user: `${selectedOrderToDelete?.patient?.firstName} ${selectedOrderToDelete?.patient?.lastName}`,
+                  id: selectedOrderToDelete?.id,
+                })}
               </>
             )}
           />

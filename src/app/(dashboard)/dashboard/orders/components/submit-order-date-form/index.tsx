@@ -8,6 +8,7 @@ import { convertJalaliToGregorian } from "@/utils/date-format";
 import { DatePicker, Form, FormInstance, Select } from "antd";
 import { Dayjs } from "dayjs";
 import moment, { now } from "moment-jalaali";
+import { useTranslations } from "next-intl";
 import { FC, useEffect, useMemo } from "react";
 
 interface Props {
@@ -40,6 +41,10 @@ const SubmitOrderDateForm: FC<Props> = ({
   handleChangeOrderApiQuery,
   orders,
 }) => {
+  const t = useTranslations(
+    "orders-page.submit-order-modal.submit-by-date-modal"
+  );
+
   const ordersDate = orders.map((order) => order.date);
 
   const formWatched = Form.useWatch([], form);
@@ -153,40 +158,40 @@ const SubmitOrderDateForm: FC<Props> = ({
         date: undefined,
       }}
     >
-      <Form.Item name="patient" label="بیمار یا مراجعه کننده">
+      <Form.Item name="patient" label={t("patient")}>
         <Select
           loading={isPatientLoading}
           options={patientsOptions}
-          placeholder="بیمار یا مراجعه کننده را انتخاب کنید"
+          placeholder={t("patient-placeholder")}
           size="large"
         />
       </Form.Item>
-      <Form.Item name="day" label="روز هفته برای ثبت رزرو">
+      <Form.Item name="day" label={t("day")}>
         <Select
           loading={isPatientLoading}
           options={weekdaysOptions}
-          placeholder="روز هفته"
+          placeholder={t("day-placeholder")}
           size="large"
         />
       </Form.Item>
-      <Form.Item name="schedule" label="نوبت های باز برای رزرو">
+      <Form.Item name="schedule" label={t("schedule")}>
         <Select
           options={schedulesOptions}
-          placeholder="نوبت مورد نیاز با توجه به زمان و روز هفته انتخاب کنید"
+          placeholder={t("schedule-placeholder")}
           size="large"
           disabled={!selectedDayFormItem}
           loading={isScheduleLoading}
         />
       </Form.Item>
-      <Form.Item name="type" label="نحوه برگزاری جلسه">
+      <Form.Item name="type" label={t("type")}>
         <Select
           options={scheduleTypeOptions}
-          placeholder="جلسه به صورت حضوری یا آنلاین برگزار شود"
+          placeholder={t("type-placeholder")}
           size="large"
           disabled={!selectedSchedule}
         />
       </Form.Item>
-      <Form.Item name="date" label="تاریخ ثبت رزرو">
+      <Form.Item name="date" label={t("date")}>
         <DatePicker
           disabledDate={getDisabledDayInDatePicker}
           style={{ width: "100%" }}

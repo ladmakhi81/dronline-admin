@@ -12,6 +12,8 @@ import { useAddDaysOff } from "@/services/days-off/add-days-off";
 import { Dayjs } from "dayjs";
 import { useNotificationStore } from "@/store/notification.store";
 import moment, { now } from "moment-jalaali";
+import { MAX_LIST_COUNT_SELECT } from "@/constant/max-list-item-count-dropdown";
+import { useTranslations } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -25,14 +27,16 @@ interface FieldTypes {
   date: Dayjs;
 }
 
-const MAX_LIST_COUNT = 1000000;
-
 const AddDaysOffDialog: FC<Props> = ({
   onClose,
   open,
   refetchDaysOff,
   doctor,
 }) => {
+  const t = useTranslations(
+    "users.doctor-detail-page.daysoff-tab.add-daysoff-modal"
+  );
+
   const [form] = Form.useForm<FieldTypes>();
 
   const formWatched = Form.useWatch([], form);
@@ -45,7 +49,7 @@ const AddDaysOffDialog: FC<Props> = ({
 
   const { data: schedulesData, isLoading: isSchedulesLoading } =
     useGetScheduleByDoctorId(doctor.id, {
-      limit: MAX_LIST_COUNT,
+      limit: MAX_LIST_COUNT_SELECT,
       page: 0,
     });
 
@@ -69,7 +73,7 @@ const AddDaysOffDialog: FC<Props> = ({
       .then(() => {
         refetchDaysOff();
         handleClose();
-        showNotification("درخواست مرخصی با موفقیت ثبت شد", "success");
+        showNotification(t("add-successfully"), "success");
         form.resetFields();
       })
       .catch(() => {});
@@ -103,7 +107,7 @@ const AddDaysOffDialog: FC<Props> = ({
     <OperationDrawer
       open={open}
       onClose={handleClose}
-      title="ثبت درخواست مرخصی"
+      title={t("title")}
       onConfirm={() => form.submit()}
     >
       <Form
@@ -114,7 +118,7 @@ const AddDaysOffDialog: FC<Props> = ({
       >
         <Form.Item
           rules={ADD_DAYS_OFF_VALIDATION_RULES.schedule}
-          label="گزینه رزرو برای مرخصی"
+          label={t("schedule-item")}
           name="schedule"
         >
           <Select
@@ -130,7 +134,7 @@ const AddDaysOffDialog: FC<Props> = ({
         <Form.Item
           rules={ADD_DAYS_OFF_VALIDATION_RULES.date}
           name="date"
-          label="تاریخ درخواست مرخصی"
+          label={t("date")}
         >
           <DatePicker
             disabled={!selectedScheduleFormItem}

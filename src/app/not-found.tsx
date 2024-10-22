@@ -1,20 +1,22 @@
 "use client";
 
 import { Flex, Typography } from "antd";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { FC } from "react";
 
 const NotFoundPage: FC = () => {
+  const t = useTranslations("not-found-page");
   return (
     <Flex style={{ height: "100vh" }} vertical justify="center" align="center">
       <Typography.Title style={{ margin: 0, fontSize: "40px" }}>
-        404
+        {t("title")}
       </Typography.Title>
       <Typography.Title style={{ margin: 0, fontSize: "35px" }}>
-        صفحه مورد نظر یافت نشد
+        {t("description")}
       </Typography.Title>
       <Link style={{ marginTop: "20px" }} href="/dashboard">
-        بازگشت به صفحه اصلی
+        {t("btn-link")}
       </Link>
     </Flex>
   );

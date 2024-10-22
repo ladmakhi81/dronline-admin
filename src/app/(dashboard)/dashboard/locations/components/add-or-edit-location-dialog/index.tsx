@@ -8,6 +8,7 @@ import { Location } from "@/services/location/types";
 import { useCreateLocation } from "@/services/location/create-location";
 import { useNotificationStore } from "@/store/notification.store";
 import { useEditLocation } from "@/services/location/edit-location";
+import { useTranslations } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -27,6 +28,7 @@ const AddOrEditLocationDialog: FC<Props> = ({
   selectedLocation,
   refetchLocation,
 }) => {
+  const t = useTranslations("locations-page.modify-location-modal");
   const [form] = Form.useForm<FieldsType>();
   const showNotification = useNotificationStore(
     (state) => state.addNotification
@@ -50,9 +52,7 @@ const AddOrEditLocationDialog: FC<Props> = ({
     }
   }, [selectedLocation, form]);
 
-  const title = selectedLocation
-    ? "ویرایش لوکیشن سرویس دهنده"
-    : "ساخت لوکیشن سرویس دهنده";
+  const title = selectedLocation ? t("edit-title") : t("create-title");
 
   const initialValues: FieldsType = {
     address: "",
@@ -67,10 +67,7 @@ const AddOrEditLocationDialog: FC<Props> = ({
         id: selectedLocation?.id,
       })
         .then(() => {
-          showNotification(
-            "ویرایش لوکیشن سرویس دهنده با موفقیت انجام گردید",
-            "success"
-          );
+          showNotification(t("edit-successfully"), "success");
           handleClose();
           refetchLocation();
         })
@@ -78,10 +75,7 @@ const AddOrEditLocationDialog: FC<Props> = ({
     } else {
       createLocationMutation({ address: value.address, city: value.city })
         .then(() => {
-          showNotification(
-            "ساخت لوکیشن سرویس دهنده با موفقیت انجام گردید",
-            "success"
-          );
+          showNotification(t("create-successfully"), "success");
           handleClose();
           refetchLocation();
         })
@@ -107,14 +101,14 @@ const AddOrEditLocationDialog: FC<Props> = ({
       >
         <Form.Item
           rules={CREATE_OR_EDIT_LOCATION_VALIDATION_RULES.city}
-          label="شهر"
+          label={t("city")}
           name="city"
         >
           <Input size="large" />
         </Form.Item>
         <Form.Item
           rules={CREATE_OR_EDIT_LOCATION_VALIDATION_RULES.address}
-          label="آدرس سرویس دهنده"
+          label={t("address")}
           name="address"
         >
           <Input.TextArea rows={5} />
